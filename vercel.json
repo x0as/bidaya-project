@@ -1,10 +1,1 @@
-{
-  "functions": {
-    "api/save-data.js": {
-      "runtime": "@vercel/node@18.x"
-    },
-    "api/submit-contact.js": {
-      "runtime": "@vercel/node@18.x"
-    }
-  }
-}
+{}
