@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team - Bidaya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">B</div>
+                <span>Bidaya</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="index.html#events">Events</a></li>
+                <li><a href="index.html#community">Community</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button class="join-btn" onclick="window.location.href='index.html#contact'">Join Us</button>
+        </div>
+    </nav>
+
+    <!-- Team Section -->
+    <section id="team" class="team-section" style="margin-top: 80px;">
+        <div class="container">
+            <h2>Meet Our Team</h2>
+            <p class="section-subtitle">The passionate innovators building the future</p>
+            
+            <!-- Leadership Team -->
+            <div class="leadership-section">
+                <h3 class="subsection-title">Leadership</h3>
+                <div class="leadership-grid" id="leadership-grid">
+                    <!-- Leadership team members will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Department Heads -->
+            <div class="departments-section">
+                <h3 class="subsection-title">Department Heads</h3>
+                <div class="departments-grid" id="hod-grid">
+                    <!-- HODs will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Join Team CTA -->
+            <div class="join-team-cta">
+                <h3>Want to Join Our Team?</h3>
+                <p>We're always looking for passionate students to help build the future of innovation</p>
+                <button class="btn-primary" onclick="window.location.href='index.html#contact'">Get Involved</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">B</div>
+                        <span>Bidaya</span>
+                    </div>
+                    <p>Empowering young innovators around the globe through collaboration, learning, and real-world impact.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Events</h4>
+                        <a href="hackathons.html">Hackathons</a>
+                        <a href="debates.html">Debates</a>
+                        <a href="workshops.html">Workshops</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Community</h4>
+                        <a href="slack.html">Slack</a>
+                        <a href="resources.html">Resources</a>
+                        <a href="mentorship.html">Mentorship</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>About</h4>
+                        <a href="mission.html">Mission</a>
+                        <a href="team.html">Team</a>
+                        <a href="index.html#contact">Contact</a>
+                        <a href="admin.html" style="color: #667eea; font-weight: 600;">🔧 Admin</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bidaya Initiative. Made with ❤️ by students, for students.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Load team data when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+                loadTeamMembers(data.teamMembers);
+            } catch (error) {
+                console.error('Error loading team data:', error);
+                // Fallback to default team members if data.json fails to load
+                loadDefaultTeam();
+            }
+        });
+
+        function loadTeamMembers(teamMembers) {
+            const leadershipGrid = document.getElementById('leadership-grid');
+            const hodGrid = document.getElementById('hod-grid');
+            
+            // Clear existing content
+            leadershipGrid.innerHTML = '';
+            hodGrid.innerHTML = '';
+            
+            teamMembers.forEach(member => {
+                const memberCard = createTeamCard(member);
+                
+                if (member.category === 'leadership') {
+                    leadershipGrid.appendChild(memberCard);
+                } else if (member.category === 'hod') {
+                    hodGrid.appendChild(memberCard);
+                }
+                // Remove core team - all members are either leadership or hod
+            });
+        }
+
+        function createTeamCard(member) {
+            const card = document.createElement('div');
+            
+            // Determine card class based on roleClass from data
+            let cardClass = 'team-card';
+            if (member.roleClass === 'founder-role') {
+                cardClass += ' founder-card';
+            } else if (member.roleClass === 'cofounder-role') {
+                cardClass += ' cofounder-card';
+            } else if (member.roleClass === 'department-role') {
+                cardClass += ' department-card';
+            } else {
+                // Fallback to old logic if roleClass is missing
+                if (member.role.toLowerCase().includes('founder')) {
+                    cardClass += member.role.toLowerCase().includes('co-founder') ? ' cofounder-card' : ' founder-card';
+                } else {
+                    cardClass += ' department-card';
+                }
+            }
+            
+            // Create team members section for HODs
+            let teamMembersSection = '';
+            if (member.category === 'hod' && member.teamMembers) {
+                if (member.teamMembers.length > 0) {
+                    teamMembersSection = `
+                        <div class="team-members">
+                            <span class="member-count">${member.teamMembers.length} Team Member${member.teamMembers.length > 1 ? 's' : ''}</span>
+                            <div class="members-list">
+                                ${member.teamMembers.map(name => `<span class="member-name">${name}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    teamMembersSection = `
+                        <div class="team-members">
+                            <span class="member-count">Department expanding soon</span>
+                        </div>
+                    `;
+                }
+            }
+            
+            card.className = cardClass;
+            card.innerHTML = `
+                <div class="team-avatar">
+                    <div class="avatar-placeholder">${member.avatar}</div>
+                </div>
+                <h4>${member.name}</h4>
+                <span class="role ${member.roleClass || 'core-role'}">${member.role}</span>
+                <p>${member.description}</p>
+                ${teamMembersSection}
+            `;
+            
+            return card;
+        }
+
+        function loadDefaultTeam() {
+            // Fallback team data in case JSON fails to load
+            const defaultTeam = [
+                {
+                    name: "Atharv",
+                    role: "Co-Founder",
+                    description: "Coding enthusiast and hackathon organizer, making sure Bidaya stays at the cutting edge.",
+                    avatar: "A",
+                    category: "leadership",
+                    roleClass: "cofounder-role"
+                },
+                {
+                    name: "Huzaifa",
+                    role: "Founder & CEO",
+                    description: "Visionary leader building the future of student innovation and collaboration worldwide.",
+                    avatar: "H",
+                    category: "leadership",
+                    roleClass: "founder-role"
+                },
+                {
+                    name: "Muhammad",
+                    role: "Co-Founder",
+                    description: "Technical architect and full-stack developer passionate about creating impactful solutions.",
+                    avatar: "M",
+                    category: "leadership",
+                    roleClass: "cofounder-role"
+                }
+            ];
+            
+            loadTeamMembers(defaultTeam);
+        }
+    </script>
+</body>
+</html>
