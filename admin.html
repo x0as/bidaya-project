@@ -683,11 +683,30 @@
         // Load data when page loads
         async function loadData() {
             try {
-                const response = await fetch('data.json');
+                const response = await fetch('/api/get-data');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                currentData = await response.json();
+                const data = await response.json();
+                
+                // Convert MongoDB data structure to expected format
+                currentData = {
+                    stats: { 
+                        studentCount: data.studentCount || 250, 
+                        countryCount: data.countryCount || 50, 
+                        eventCount: data.eventCount || 100 
+                    },
+                    teamMembers: data.teamMembers || [],
+                    contactSubmissions: data.contactSubmissions || [],
+                    users: data.users || {
+                        "Founder": {
+                            "username": "Founder",
+                            "password": "bidaya2025",
+                            "role": "founder"
+                        }
+                    },
+                    lastUpdated: data.lastUpdated || new Date().toISOString()
+                };
                 
                 // Only populate form if we're logged in
                 if (currentUserInfo) {
@@ -699,9 +718,16 @@
                 showStatus('Error loading data. Using default values.', 'error');
                 // Set default data - but still include users for login
                 currentData = {
-                    stats: { studentCount: 2000, countryCount: 50, eventCount: 100 },
+                    stats: { studentCount: 250, countryCount: 50, eventCount: 100 },
                     teamMembers: [],
-                    users: {}, // Empty users object - this might be the problem!
+                    contactSubmissions: [],
+                    users: {
+                        "Founder": {
+                            "username": "Founder",
+                            "password": "bidaya2025",
+                            "role": "founder"
+                        }
+                    },
                     lastUpdated: new Date().toISOString()
                 };
                 if (currentUserInfo) {
@@ -1042,6 +1068,17 @@
                 // Update timestamp
                 currentData.lastUpdated = new Date().toISOString();
                 
+                // Convert to MongoDB format
+                const mongoData = {
+                    studentCount: currentData.stats.studentCount,
+                    countryCount: currentData.stats.countryCount,
+                    eventCount: currentData.stats.eventCount,
+                    teamMembers: currentData.teamMembers,
+                    contactSubmissions: currentData.contactSubmissions,
+                    users: currentData.users,
+                    lastUpdated: currentData.lastUpdated
+                };
+                
                 // Use Vercel API endpoint
                 const endpoints = [
                     '/api/save-data'        // Vercel serverless function
@@ -1056,7 +1093,7 @@
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify(currentData)
+                            body: JSON.stringify(mongoData)
                         });
                         
                         if (response.ok) {

@@ -24,7 +24,7 @@ async function connectToDatabase() {
 module.exports = async (req, res) => {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
@@ -32,41 +32,36 @@ module.exports = async (req, res) => {
     return;
   }
 
-  if (req.method !== 'POST') {
+  if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
     const { db } = await connectToDatabase();
     
-    // Add new contact submission
-    const contactData = {
-      ...req.body,
-      timestamp: new Date().toISOString(),
-      id: Date.now()
-    };
-    
-    // Insert into contacts collection
-    const contactsCollection = db.collection('contact_submissions');
-    await contactsCollection.insertOne(contactData);
-    
-    // Also update the main data document to include this contact in the array
+    // Get main data from MongoDB
     const mainCollection = db.collection('website_data');
-    await mainCollection.updateOne(
-      { _id: 'main_data' },
-      { 
-        $push: { contactSubmissions: contactData },
-        $set: { lastUpdated: new Date().toISOString() }
-      },
-      { upsert: true }
-    );
+    let data = await mainCollection.findOne({ _id: 'main_data' });
     
-    res.status(200).json({ 
-      message: 'Contact form submitted successfully', 
-      data: contactData 
-    });
+    // If no data exists, return default structure
+    if (!data) {
+      data = {
+        studentCount: 250,
+        teamMembers: [],
+        contactSubmissions: [],
+        users: {
+          "Founder": {
+            "username": "Founder",
+            "password": "bidaya2025",
+            "role": "founder"
+          }
+        }
+      };
+    }
+    
+    res.status(200).json(data);
   } catch (error) {
-    console.error('Error saving contact form:', error);
-    res.status(500).json({ error: 'Failed to save contact form' });
+    console.error('Error retrieving data:', error);
+    res.status(500).json({ error: 'Failed to retrieve data' });
   }
 };

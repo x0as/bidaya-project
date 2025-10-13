@@ -1,7 +1,27 @@
-const fs = require('fs');
-const path = require('path');
+const { MongoClient } = require('mongodb');
 
-module.exports = (req, res) => {
+const MONGODB_URI = 'mongodb+srv://muhammadhuzaifakhalidaziz:1Huzaifa3@discordbot.db3dr2k.mongodb.net/?retryWrites=true&w=majority';
+const DB_NAME = 'bidaya_website';
+
+let cachedClient = null;
+let cachedDb = null;
+
+async function connectToDatabase() {
+  if (cachedClient && cachedDb) {
+    return { client: cachedClient, db: cachedDb };
+  }
+
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
+  const db = client.db(DB_NAME);
+
+  cachedClient = client;
+  cachedDb = db;
+
+  return { client, db };
+}
+
+module.exports = async (req, res) => {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -17,22 +37,27 @@ module.exports = (req, res) => {
   }
 
   try {
-    const dataPath = path.join(process.cwd(), 'data.json');
+    const { db } = await connectToDatabase();
     
-    // Read existing data
-    let currentData = {};
-    if (fs.existsSync(dataPath)) {
-      const fileContent = fs.readFileSync(dataPath, 'utf8');
-      currentData = JSON.parse(fileContent);
-    }
-
-    // Update with new data
-    const newData = { ...currentData, ...req.body, lastUpdated: new Date().toISOString() };
+    // Update the main data document
+    const collection = db.collection('website_data');
     
-    // Write back to file
-    fs.writeFileSync(dataPath, JSON.stringify(newData, null, 2));
+    const updateData = {
+      ...req.body,
+      lastUpdated: new Date().toISOString()
+    };
     
-    res.status(200).json({ message: 'Data saved successfully', data: newData });
+    // Upsert the main data document
+    await collection.replaceOne(
+      { _id: 'main_data' },
+      { _id: 'main_data', ...updateData },
+      { upsert: true }
+    );
+    
+    res.status(200).json({ 
+      message: 'Data saved successfully', 
+      data: updateData 
+    });
   } catch (error) {
     console.error('Error saving data:', error);
     res.status(500).json({ error: 'Failed to save data' });

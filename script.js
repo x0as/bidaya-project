@@ -283,19 +283,24 @@ function initFloatingCards() {
     }
 }
 
-// Counter Animation with JSON Data
+// Counter Animation with API Data
 async function animateCounters() {
     const counters = document.querySelectorAll('.stat-number, .stat-big');
     
-    // Load data from JSON file
+    // Load data from API
     let data = {};
     try {
-        const response = await fetch('data.json');
-        data = await response.json();
-    } catch (error) {
-        console.log('Failed to load data.json, using default values');
+        const response = await fetch('/api/get-data');
+        const apiData = await response.json();
         data = {
-            studentCount: 2000,
+            studentCount: apiData.studentCount || 250,
+            countryCount: apiData.countryCount || 50,
+            eventCount: apiData.eventCount || 100
+        };
+    } catch (error) {
+        console.log('Failed to load data from API, using default values');
+        data = {
+            studentCount: 250,
             countryCount: 50,
             eventCount: 100
         };
@@ -313,7 +318,7 @@ async function animateCounters() {
         const statLabel = counter.parentElement.querySelector('.stat-label');
         if (statLabel) {
             if (statLabel.textContent.includes('Students Estimated')) {
-                target = data.studentCount || 2000;
+                target = data.studentCount || 250;
             } else if (statLabel.textContent.includes('Countries')) {
                 target = data.countryCount || 50;
             } else if (statLabel.textContent.includes('Events')) {
