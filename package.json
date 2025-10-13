@@ -1,20 +1,18 @@
 {
-  "name": "bidaya-admin-server",
+  "name": "bidaya-website",
   "version": "1.0.0",
-  "description": "Simple server for Bidaya admin panel to save data",
-  "main": "server.js",
+  "description": "Bidaya organization website with admin panel",
+  "main": "index.html",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "echo 'Development server'",
+    "build": "echo 'No build step required'",
+    "start": "echo 'Static site deployed'"
   },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
   },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
-  },
-  "keywords": ["bidaya", "admin", "server"],
+  "keywords": ["bidaya", "admin", "website", "vercel"],
   "author": "Bidaya Team",
   "license": "MIT"
 }

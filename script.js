@@ -407,6 +407,59 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+// Mobile Menu Toggle
+function toggleMobileMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    
+    navLinks.classList.toggle('mobile-menu-open');
+    mobileToggle.classList.toggle('active');
+    
+    // Prevent body scroll when menu is open
+    if (navLinks.classList.contains('mobile-menu-open')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+}
+
+// Close mobile menu when clicking on a link
+document.addEventListener('click', function(e) {
+    if (e.target.matches('.nav-links a')) {
+        const navLinks = document.querySelector('.nav-links');
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        
+        navLinks.classList.remove('mobile-menu-open');
+        mobileToggle.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', function(e) {
+    const navLinks = document.querySelector('.nav-links');
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const navbar = document.querySelector('.navbar');
+    
+    if (!navbar.contains(e.target) && navLinks.classList.contains('mobile-menu-open')) {
+        navLinks.classList.remove('mobile-menu-open');
+        mobileToggle.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// Handle window resize
+window.addEventListener('resize', function() {
+    const navLinks = document.querySelector('.nav-links');
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    
+    if (window.innerWidth > 768) {
+        navLinks.classList.remove('mobile-menu-open');
+        mobileToggle.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
 // Export functions for testing (if needed)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -414,6 +467,7 @@ if (typeof module !== 'undefined' && module.exports) {
         initNavigation,
         showSuccessMessage,
         formatNumber,
-        throttle
+        throttle,
+        toggleMobileMenu
     };
 }
