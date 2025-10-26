@@ -24,6 +24,11 @@
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
             <button class="join-btn" onclick="window.location.href='index.html#contact'">Join Us</button>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
@@ -62,21 +67,22 @@
                 <div class="footer-links">
                     <div class="link-group">
                         <h4>Events</h4>
-                        <a href="javascript:void(0)" onclick="showComingSoon('Hackathons')">Hackathons</a>
-                        <a href="javascript:void(0)" onclick="showComingSoon('Debates')">Debates</a>
-                        <a href="javascript:void(0)" onclick="showComingSoon('Workshops')">Workshops</a>
+                        <a href="hackathons.html">Hackathons</a>
+                        <a href="debates.html">Debates</a>
+                        <a href="workshops.html">Workshops</a>
                     </div>
                     <div class="link-group">
                         <h4>Community</h4>
-                        <a href="javascript:void(0)" onclick="showComingSoon('Slack Community')">Slack</a>
-                        <a href="javascript:void(0)" onclick="showComingSoon('Resources')">Resources</a>
-                        <a href="javascript:void(0)" onclick="showComingSoon('Mentorship Program')">Mentorship</a>
+                        <a href="slack.html">Slack</a>
+                        <a href="resources.html">Resources</a>
+                        <a href="mentorship.html">Mentorship</a>
                     </div>
                     <div class="link-group">
                         <h4>About</h4>
-                        <a href="index.html#about">Mission</a>
+                        <a href="mission.html">Mission</a>
                         <a href="team.html">Team</a>
                         <a href="index.html#contact">Contact</a>
+                        <a href="admin.html" style="color: #667eea; font-weight: 600;">🔧 Admin</a>
                     </div>
                 </div>
             </div>
@@ -86,9 +92,7 @@
         </div>
     </footer>
 
-    <script src="instagram-config.js"></script>
     <script src="script.js"></script>
-    
     <script>
         window.onload = async function() {
             const container = document.getElementById('team-container');
@@ -113,12 +117,12 @@
                             <h3 class="subsection-title">Leadership</h3>
                             <div class="leadership-grid">
                                 ${leadership.map(member => `
-                                    <div class="team-card ${member.roleClass || 'leadership-card'} ${member.roleStyle ? member.roleStyle.replace('-role', '-card') : ''}">
+                                    <div class="team-card leadership-card">
                                         <div class="team-avatar">
                                             <div class="avatar-placeholder">${member.avatar || member.name.charAt(0)}</div>
                                         </div>
                                         <h4>${member.name}</h4>
-                                        <span class="role ${member.roleStyle || 'leadership-role'}">${member.role}</span>
+                                        <span class="role leadership-role">${member.role}</span>
                                         <p>${member.description}</p>
                                     </div>
                                 `).join('')}
@@ -154,37 +158,6 @@
                 container.innerHTML = '<div style="text-align: center; color: red;">Error loading team data</div>';
             }
         };
-        
-        // Coming Soon popup function
-        function showComingSoon(featureName) {
-            const popup = document.createElement('div');
-            popup.className = 'coming-soon-popup';
-            popup.innerHTML = `
-                <div class="popup-content">
-                    <div class="popup-icon">🚀</div>
-                    <h3>Coming Soon!</h3>
-                    <p><strong>${featureName}</strong> is currently under development.</p>
-                    <p>We're working hard to bring you this exciting feature. Stay tuned!</p>
-                    <button onclick="closeComingSoon()" class="popup-btn">Got it!</button>
-                </div>
-            `;
-            document.body.appendChild(popup);
-            
-            // Show popup with animation
-            setTimeout(() => {
-                popup.classList.add('show');
-            }, 10);
-        }
-        
-        function closeComingSoon() {
-            const popup = document.querySelector('.coming-soon-popup');
-            if (popup) {
-                popup.classList.remove('show');
-                setTimeout(() => {
-                    popup.remove();
-                }, 300);
-            }
-        }
     </script>
 </body>
 </html>

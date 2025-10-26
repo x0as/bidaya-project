@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bidaya Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Brand Colors from Logo */
+            --orange: #FF8A00;
+            --pink: #FF0080;
+            --purple: #8000FF;
+            --cyan: #00FFFF;
+            --gradient: linear-gradient(135deg, var(--orange) 0%, var(--pink) 30%, var(--purple) 70%, var(--cyan) 100%);
+            
+            /* Background Colors */
+            --bg-primary: #0A0A0A;
+            --bg-secondary: #050505;
+            --bg-tertiary: rgba(255, 255, 255, 0.05);
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --bg-glass: rgba(255, 255, 255, 0.1);
+            
+            /* Text Colors */
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --text-muted: #808080;
+            
+            /* Effects */
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 10px 30px rgba(255, 138, 0, 0.3);
+            
+            /* Legacy variables for compatibility */
+            --accent-primary: var(--orange);
+            --accent-secondary: var(--pink);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 138, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 128, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(128, 0, 255, 0.05) 0%, transparent 50%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-primary);
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .admin-header {
+            background: var(--gradient);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .admin-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-content {
+            padding: 40px;
+            background: var(--bg-secondary);
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            border-color: var(--orange);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .section h2 {
+            color: #f0f6fc;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255, 138, 0, 0.2);
+            background: var(--bg-card);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .team-member {
+            background: var(--bg-tertiary);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border-primary);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .team-member.collapsed {
+            padding: 15px 25px;
+        }
+
+        .team-member h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .team-member h3:hover {
+            color: var(--accent-primary);
+        }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .member-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .expand-icon {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+            color: #667eea;
+        }
+
+        .team-member.collapsed .expand-icon {
+            transform: rotate(-90deg);
+        }
+
+        .member-details {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .team-member.collapsed .member-details {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .status-message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .avatar-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .login-container {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 20px !important;
+            background: var(--bg-primary);
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 138, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 128, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(128, 0, 255, 0.05) 0%, transparent 50%);
+            z-index: 9999 !important;
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin: 0 auto !important;
+            position: relative !important;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin: 0 auto 20px;
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .admin-logo {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 80px !important;
+            object-fit: contain !important;
+            margin: 0 auto 25px !important;
+            display: block !important;
+            background: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .login-form {
+            text-align: left;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form input {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .login-form input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255, 138, 0, 0.2);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 138, 0, 0.4);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            background: var(--bg-tertiary);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+
+        @keyframes errorPulse {
+            0%, 100% { background: rgba(255, 0, 0, 0.1); }
+            50% { background: rgba(255, 0, 0, 0.2); }
+        }
+
+        .scanner-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #495057;
+        }
+
+        .team-members-list {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+        }
+
+        .team-member-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .team-member-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Hide leftover terminal elements */
+        .terminal-error,
+        .terminal-button {
+            display: none !important;
+        }
+
+        .team-member-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .team-member-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .remove-member-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .remove-member-btn:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .empty-team-message {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .contact-submission {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-primary);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-submission:hover {
+            border-color: var(--orange);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .submission-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .submission-date {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .submission-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .submission-detail {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .submission-detail strong {
+            color: var(--text-primary);
+        }
+
+        .submission-message {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--orange);
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .no-submissions {
+            text-align: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            padding: 40px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            border: 1px solid var(--border-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <img src="images/bidaya-full-logo.png" alt="Bidaya Admin" class="admin-logo" />
+            <h1 class="login-title">Bidaya Admin</h1>
+            <p class="login-subtitle">Access the administration panel</p>
+            
+            <form class="login-form" onsubmit="login(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="login-btn">Access Panel</button>
+                <div id="loginError" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+                </button>
+                
+                <div id="loginError" class="terminal-error" style="display: none;">
+                    ⚠️ ACCESS DENIED - INVALID CREDENTIALS ⚠️
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Admin Panel -->
+    <div id="adminPanel" class="admin-container" style="display: none;">
+        <a href="index.html" class="back-btn">← Back to Website</a>
+        <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        
+        <div class="admin-header">
+            <h1>🚀 Bidaya Admin Panel</h1>
+            <p>Manage your website content and data</p>
+            <div class="user-info" style="margin-top: 10px; font-size: 14px; opacity: 0.9;">
+                Welcome, <span id="currentUser">User</span> | <span id="currentDepartment">Role</span>
+            </div>
+        </div>
+        
+        <div class="admin-content">
+            <div id="statusMessage" class="status-message"></div>
+            
+            <!-- Contact Submissions Section -->
+            <div class="section" id="contactSection">
+                <h2>📧 Contact Form Submissions</h2>
+                <div id="contactSubmissions">
+                    <!-- Contact submissions will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Statistics Section -->
+            <div class="section" id="statsSection">
+                <h2>📊 Website Statistics</h2>
+                <div class="stats-grid">
+                    <div class="form-group">
+                        <label for="studentCount">Students Estimated</label>
+                        <input type="number" id="studentCount" min="0" placeholder="2000">
+                    </div>
+                    <div class="form-group">
+                        <label for="countryCount">Countries</label>
+                        <input type="number" id="countryCount" min="0" placeholder="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventCount">Events Planned</label>
+                        <input type="number" id="eventCount" min="0" placeholder="100">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Team Members Section -->
+            <div class="section" id="teamSection">
+                <h2 id="teamSectionTitle">👥 Team Members</h2>
+                <div id="teamMembers">
+                    <!-- Team members will be loaded here -->
+                </div>
+                <button class="btn btn-primary" id="addMemberBtn" onclick="addNewMember()">+ Add New Team Member</button>
+            </div>
+            
+            <!-- Save Changes -->
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="saveChanges()">💾 Save All Changes</button>
+                <button class="btn btn-secondary" onclick="loadData()">🔄 Reload Data</button>
+                <button class="btn btn-primary" onclick="downloadBackup()">📥 Download Backup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentData = {};
+        let currentUser = null; // username
+        let currentUserInfo = null; // user object with permissions, etc.
+
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const loggedInUser = sessionStorage.getItem('adminLoggedIn');
+            const savedUserInfo = sessionStorage.getItem('userInfo');
+            
+            if (loggedInUser && savedUserInfo) {
+                currentUser = loggedInUser;
+                currentUserInfo = JSON.parse(savedUserInfo);
+                showAdminPanel();
+            } else {
+                showLoginScreen();
+            }
+        });
+
+        function login(event) {
+            event.preventDefault();
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const errorDiv = document.getElementById('loginError');
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            
+            if (!username || !password) {
+                showLoginError('Please enter both username and password', errorDiv);
+                return;
+            }
+            
+            // Load data and check credentials
+            checkUserCredentials(username, password, errorDiv, usernameInput, passwordInput);
+        }
+
+        function handleLoginKeypress(event) {
+            if (event.key === 'Enter') {
+                login(event);
+            }
+        }
+
+        function checkCredentials() {
+            // Legacy function for backward compatibility
+            const usernameInput = document.getElementById('adminUsername') || document.getElementById('username');
+            const passwordInput = document.getElementById('adminPassword') || document.getElementById('password');
+            const errorDiv = document.getElementById('loginError');
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            
+            if (!username || !password) {
+                showLoginError('Please enter both username and password', errorDiv);
+                return;
+            }
+            
+            // Load data and check credentials
+            checkUserCredentials(username, password, errorDiv, usernameInput, passwordInput);
+        }
+        
+        async function checkUserCredentials(username, password, errorDiv, usernameInput, passwordInput) {
+            try {
+                // Use secure login API endpoint
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                if (response.ok) {
+                    const loginResult = await response.json();
+                    
+                    if (loginResult.success) {
+                        // Successful login
+                        currentUser = username;
+                        currentUserInfo = loginResult.user;
+                        
+                        sessionStorage.setItem('adminLoggedIn', currentUser);
+                        sessionStorage.setItem('userInfo', JSON.stringify(currentUserInfo));
+                        
+                        // Show admin panel and load data
+                        showAdminPanel();
+                        errorDiv.style.display = 'none';
+                        usernameInput.value = '';
+                        passwordInput.value = '';
+                        return;
+                    }
+                }
+                
+                // Failed login
+                showLoginError('❌ Invalid username or password. Please try again.', errorDiv);
+                passwordInput.value = '';
+                usernameInput.focus();
+                
+            } catch (error) {
+                console.error('Error checking credentials:', error);
+                showLoginError('❌ Login service unavailable. Please try again later.', errorDiv);
+            }
+        }
+
+        function showLoginError(message, errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            // Add shake animation to the form
+            const loginForm = document.querySelector('.section');
+            loginForm.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => {
+                loginForm.style.animation = '';
+            }, 500);
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminLoggedIn');
+            sessionStorage.removeItem('userInfo');
+            currentUser = null;
+            currentUserInfo = null;
+            showLoginScreen();
+        }
+
+        function showLoginScreen() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            const usernameField = document.getElementById('username');
+            if (usernameField) {
+                usernameField.focus();
+            }
+        }
+
+        function canEditUser(targetUsername) {
+            if (!currentUserInfo) return false;
+            
+            // Founder can edit everyone
+            if (currentUserInfo.role === 'Founder') return true;
+            
+            // Others can only edit themselves (future enhancement: could add more role-based permissions)
+            return currentUser === targetUsername;
+        }
+
+        function canViewContacts() {
+            if (!currentUserInfo) return false;
+            return currentUserInfo.permissions && currentUserInfo.permissions.includes('view_contacts');
+        }
+
+        function canEditMember(memberName) {
+            if (!currentUserInfo) return false;
+            
+            // Founder can edit everyone
+            if (currentUserInfo.role === 'Founder') return true;
+            
+            // HODs can edit their own profile and their team members
+            if (currentUserInfo.role === 'HOD') {
+                return currentUserInfo.name.toLowerCase() === memberName.toLowerCase();
+            }
+            
+            return false;
+        }
+
+        function showAdminPanel() {
+            console.log('showAdminPanel() called');
+            const loginScreen = document.getElementById('loginScreen');
+            const adminPanel = document.getElementById('adminPanel');
+            
+            console.log('loginScreen element:', loginScreen);
+            console.log('adminPanel element:', adminPanel);
+            
+            if (loginScreen) {
+                loginScreen.style.display = 'none !important';
+                loginScreen.style.visibility = 'hidden';
+                loginScreen.style.zIndex = '-1';
+                console.log('Hidden login screen');
+            }
+            if (adminPanel) {
+                adminPanel.style.display = 'block';
+                adminPanel.style.visibility = 'visible';
+                adminPanel.style.zIndex = '1';
+                console.log('Showed admin panel');
+            }
+            
+            // Update welcome message - with null checks
+            const userDisplayName = currentUserInfo ? currentUserInfo.name || currentUser : currentUser;
+            const userRole = currentUserInfo ? currentUserInfo.role || 'User' : 'User';
+            const userDept = currentUserInfo && currentUserInfo.department ? currentUserInfo.department : '';
+            
+            const currentUserElement = document.getElementById('currentUser');
+            const currentDepartmentElement = document.getElementById('currentDepartment');
+            
+            if (currentUserElement) {
+                currentUserElement.textContent = userDisplayName;
+            }
+            if (currentDepartmentElement) {
+                currentDepartmentElement.textContent = userDept ? `${userRole} - ${userDept}` : userRole;
+            }
+            
+            // Update UI based on user permissions
+            updateUIForUser();
+            
+            loadData().then(() => {
+                console.log('Data loaded successfully');
+                populateForm();
+                loadContactSubmissions();
+            }).catch(error => {
+                console.error('Error in loadData:', error);
+                // Don't let data loading errors prevent the admin panel from showing
+            });
+        }
+
+        function updateUIForUser() {
+            if (!currentUserInfo) {
+                console.log('No user info available for UI update');
+                return;
+            }
+            
+            console.log(`Updating UI for user: ${currentUserInfo.name} (${currentUserInfo.role})`);
+            
+            // Just log what we would update instead of actually updating non-existent elements
+            if (currentUserInfo.role === 'Founder') {
+                console.log('User has Founder access - would show all sections');
+            } else if (currentUserInfo.role === 'HOD') {
+                console.log(`User is HOD of ${currentUserInfo.department} - would show department-specific view`);
+            }
+            
+            // The current admin panel layout doesn't have the specific elements we used to update,
+            // so we'll just ensure the contact section is visible for now
+            const contactSection = document.getElementById('contactSection');
+            if (contactSection) {
+                contactSection.style.display = 'block';
+                console.log('Contact section made visible');
+            }
+        }
+
+        // Load data when page loads
+        async function loadData() {
+            try {
+                // Load data from MongoDB API
+                console.log('Attempting to fetch data from /api/get-data...');
+                const response = await fetch('/api/get-data');
+                console.log('Response status:', response.status, response.statusText);
+                
+                if (response.ok) {
+                    currentData = await response.json();
+                    console.log('Loaded data from MongoDB API:', currentData);
+                } else {
+                    const errorText = await response.text();
+                    console.error('API Error Response:', errorText);
+                    throw new Error(`MongoDB API failed: ${response.status} ${errorText}`);
+                }
+                
+                // Only populate form if we're logged in
+                if (currentUserInfo) {
+                    populateForm();
+                    showStatus('Data loaded successfully!', 'success');
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showStatus('Error loading data. Using default values.', 'error');
+                // Set default data - but still include users for login
+                currentData = {
+                    stats: { studentCount: 250, countryCount: 50, eventCount: 100 },
+                    teamMembers: [],
+                    contactSubmissions: [],
+                    users: {
+                        "Founder": {
+                            "password": "bidaya2025",
+                            "role": "Founder",
+                            "name": "Main Administrator",
+                            "permissions": ["edit_stats", "view_contacts", "delete_members", "manage_all"]
+                        }
+                    },
+                    lastUpdated: new Date().toISOString()
+                };
+                if (currentUserInfo) {
+                    populateForm();
+                }
+            }
+        }
+
+        function populateForm() {
+            console.log('populateForm() called, currentData:', currentData);
+            console.log('currentUserInfo:', currentUserInfo);
+            
+            const adminPanel = document.getElementById('adminPanel');
+            console.log('Admin panel visibility:', adminPanel ? adminPanel.style.display : 'not found');
+            console.log('Admin panel computed style:', adminPanel ? window.getComputedStyle(adminPanel).display : 'not found');
+            
+            // Populate statistics (only for users with permission)
+            if (currentUserInfo && currentUserInfo.permissions && currentUserInfo.permissions.includes('edit_stats')) {
+                const studentCountEl = document.getElementById('studentCount');
+                const countryCountEl = document.getElementById('countryCount');
+                const eventCountEl = document.getElementById('eventCount');
+                
+                console.log('Stat elements found:', {studentCountEl, countryCountEl, eventCountEl});
+                
+                if (studentCountEl) studentCountEl.value = currentData.stats.studentCount;
+                if (countryCountEl) countryCountEl.value = currentData.stats.countryCount;
+                if (eventCountEl) eventCountEl.value = currentData.stats.eventCount;
+            }
+            
+            // Load contact submissions (only for users with permission)
+            if (canViewContacts()) {
+                console.log('Loading contact submissions...');
+                loadContactSubmissions();
+            }
+            
+            // Populate team members
+            console.log('Rendering team members...');
+            renderTeamMembers();
+        }
+
+        function loadContactSubmissions() {
+            const container = document.getElementById('contactSubmissions');
+            console.log('loadContactSubmissions - container:', container);
+            console.log('loadContactSubmissions - currentData.contactSubmissions:', currentData.contactSubmissions);
+            
+            if (!container) {
+                console.error('❌ Contact submissions container (#contactSubmissions) not found');
+                console.log('Available elements with contactSubmissions:', document.querySelectorAll('[id*="contactSubmissions"]'));
+                return;
+            }
+            
+            // Combine submissions from data.json and localStorage
+            let submissions = currentData.contactSubmissions || [];
+            const localSubmissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+            
+            // Add local submissions to the list
+            submissions = [...submissions, ...localSubmissions];
+            
+            if (submissions.length === 0) {
+                container.innerHTML = '<div class="no-submissions">📭 No contact form submissions yet</div>';
+                console.log('✅ Displayed "no submissions" message');
+                return;
+            }
+            
+            container.innerHTML = submissions.map(submission => `
+                <div class="contact-submission">
+                    <div class="submission-header">
+                        <div class="submission-name">${submission.name}</div>
+                        <div class="submission-date">${new Date(submission.timestamp).toLocaleDateString()} ${new Date(submission.timestamp).toLocaleTimeString()}</div>
+                    </div>
+                    <div class="submission-details">
+                        <div class="submission-detail">
+                            <strong>Email:</strong> ${submission.email}
+                        </div>
+                        <div class="submission-detail">
+                            <strong>Interest:</strong> ${submission.interest || 'Not specified'}
+                        </div>
+                    </div>
+                    ${submission.message ? `<div class="submission-message">"${submission.message}"</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderTeamMembers() {
+            const container = document.getElementById('teamMembers');
+            console.log('renderTeamMembers - container:', container);
+            console.log('renderTeamMembers - currentData.teamMembers:', currentData.teamMembers);
+            
+            if (!container) {
+                console.error('❌ Team members container (#teamMembers) not found');
+                console.log('Available elements with teamMembers:', document.querySelectorAll('[id*="teamMembers"]'));
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            let membersToShow = currentData.teamMembers;
+            
+            // Filter members for HODs - only show their own profile
+            if (currentUserInfo && currentUserInfo.role === 'HOD') {
+                membersToShow = currentData.teamMembers.filter(member => 
+                    member.name.toLowerCase() === currentUserInfo.name.toLowerCase()
+                );
+            }
+            
+            if (membersToShow.length === 0) {
+                container.innerHTML = '<div class="no-submissions">👤 No team members found</div>';
+                console.log('✅ Displayed "no team members" message');
+                return;
+            }
+            
+            membersToShow.forEach((member, globalIndex) => {
+                // Find the actual index in the full array for updates
+                const actualIndex = currentData.teamMembers.findIndex(m => m.id === member.id);
+                
+                const memberDiv = document.createElement('div');
+                memberDiv.className = 'team-member collapsed';
+                memberDiv.id = `team-member-${actualIndex}`;
+                
+                const teamMembersCount = member.teamMembers ? member.teamMembers.length : 0;
+                const teamMembersText = teamMembersCount > 0 ? `${teamMembersCount} team member${teamMembersCount > 1 ? 's' : ''}` : 'No team members';
+                
+                // Check if user can edit this member
+                const canEdit = canEditMember(member.name);
+                const canDelete = currentUserInfo && currentUserInfo.role === 'Founder';
+                
+                // Only show delete button for Founder
+                const deleteButton = canDelete ? 
+                    `<button class="btn btn-danger" onclick="event.stopPropagation(); removeMember(${actualIndex})" style="padding: 5px 10px; font-size: 12px;">Delete</button>` : '';
+                
+                memberDiv.innerHTML = `
+                    <h3 onclick="toggleMember(${actualIndex})">
+                        <div class="member-header">
+                            <div class="avatar-preview">${member.avatar}</div>
+                            <div>
+                                <div style="font-weight: 700; font-size: 16px;">${member.name}</div>
+                                <div class="member-preview">
+                                    <span>${member.role}</span>
+                                    <span>•</span>
+                                    <span>${member.category}</span>
+                                    ${member.category === 'hod' ? `<span>• ${teamMembersText}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span class="expand-icon">▼</span>
+                            ${deleteButton}
+                        </div>
+                    </h3>
+                    <div class="member-details">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" value="${member.name}" onchange="updateMember(${actualIndex}, 'name', this.value)" ${canEdit ? '' : 'disabled'}>
+                        </div>
+                        <div class="form-group">
+                            <label>Role</label>
+                            <input type="text" value="${member.role}" onchange="updateMember(${actualIndex}, 'role', this.value)" ${canEdit ? '' : 'disabled'}>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea rows="3" onchange="updateMember(${actualIndex}, 'description', this.value)" ${canEdit ? '' : 'disabled'}>${member.description}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Avatar Letter</label>
+                            <input type="text" maxlength="1" value="${member.avatar}" onchange="updateMember(${actualIndex}, 'avatar', this.value.toUpperCase())" ${canEdit ? '' : 'disabled'}>
+                        </div>
+                        ${currentUserInfo && currentUserInfo.role === 'Founder' ? `
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select onchange="updateMember(${actualIndex}, 'category', this.value)">
+                                <option value="leadership" ${member.category === 'leadership' ? 'selected' : ''}>Leadership</option>
+                                <option value="hod" ${member.category === 'hod' ? 'selected' : ''}>Head of Department</option>
+                            </select>
+                        </div>
+                        ` : ''}
+                        <div class="form-group" id="teamMembers-${actualIndex}" style="display: ${member.category === 'hod' ? 'block' : 'none'};">
+                            <label>Team Members</label>
+                            <div id="teamMembersList-${actualIndex}" class="team-members-list">
+                                ${renderTeamMembersList(member.teamMembers || [], actualIndex)}
+                            </div>
+                            ${canEdit ? `<button type="button" class="btn btn-secondary" onclick="addTeamMember(${actualIndex})" style="margin-top: 10px; padding: 8px 16px; font-size: 14px;">+ Add Team Member</button>` : ''}
+                            <small style="color: #6c757d; font-size: 12px; display: block; margin-top: 5px;">${canEdit ? 'Manage your team members' : 'View team members'}</small>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(memberDiv);
+            });
+        }
+
+        function toggleMember(index) {
+            const memberDiv = document.getElementById(`team-member-${index}`);
+            memberDiv.classList.toggle('collapsed');
+        }
+
+        function updateMember(index, field, value) {
+            // Check permission
+            const member = currentData.teamMembers[index];
+            if (!canEditMember(member.name)) {
+                alert('You do not have permission to edit this member.');
+                return;
+            }
+            
+            currentData.teamMembers[index][field] = value;
+            
+            if (field === 'avatar') {
+                // Update avatar preview in header
+                const memberDiv = document.getElementById(`team-member-${index}`);
+                const avatarPreview = memberDiv.querySelector('.avatar-preview');
+                if (avatarPreview) {
+                    avatarPreview.textContent = value.toUpperCase();
+                }
+            } else if (field === 'name' || field === 'role') {
+                // Update the header preview
+                updateMemberPreview(index);
+            } else if (field === 'category') {
+                // Show/hide team members field based on category
+                const teamMembersField = document.getElementById(`teamMembers-${index}`);
+                if (teamMembersField) {
+                    teamMembersField.style.display = value === 'hod' ? 'block' : 'none';
+                }
+                
+                // Initialize teamMembers array if switching to HOD
+                if (value === 'hod' && !currentData.teamMembers[index].teamMembers) {
+                    currentData.teamMembers[index].teamMembers = [];
+                }
+                
+                // Update role class based on category
+                if (value === 'hod') {
+                    currentData.teamMembers[index].roleClass = 'department-role';
+                } else if (value === 'leadership') {
+                    if (currentData.teamMembers[index].role.toLowerCase().includes('co-founder')) {
+                        currentData.teamMembers[index].roleClass = 'cofounder-role';
+                    } else {
+                        currentData.teamMembers[index].roleClass = 'founder-role';
+                    }
+                }
+                
+                // Update the header preview
+                updateMemberPreview(index);
+            }
+        }
+
+        function updateMemberPreview(index) {
+            const member = currentData.teamMembers[index];
+            const memberDiv = document.getElementById(`team-member-${index}`);
+            const nameDiv = memberDiv.querySelector('.member-header > div > div:first-child');
+            const previewDiv = memberDiv.querySelector('.member-preview');
+            
+            if (nameDiv) {
+                nameDiv.textContent = member.name;
+            }
+            
+            if (previewDiv) {
+                const teamMembersCount = member.teamMembers ? member.teamMembers.length : 0;
+                const teamMembersText = teamMembersCount > 0 ? `${teamMembersCount} team member${teamMembersCount > 1 ? 's' : ''}` : 'No team members';
+                
+                previewDiv.innerHTML = `
+                    <span>${member.role}</span>
+                    <span>•</span>
+                    <span>${member.category}</span>
+                    ${member.category === 'hod' ? `<span>• ${teamMembersText}</span>` : ''}
+                `;
+            }
+        }
+
+        function updateTeamMembers(index, value) {
+            // This function is now replaced by individual team member management
+            // Keeping for compatibility but not used
+        }
+
+        function renderTeamMembersList(teamMembers, hodIndex) {
+            if (!teamMembers || teamMembers.length === 0) {
+                return '<div class="empty-team-message">No team members yet. Click "Add Team Member" to add one.</div>';
+            }
+            
+            // Check if current user can edit this HOD's team
+            const hodMember = currentData.teamMembers[hodIndex];
+            const canEditTeam = canEditMember(hodMember.name);
+            
+            return teamMembers.map((member, memberIndex) => `
+                <div class="team-member-item">
+                    <input 
+                        type="text" 
+                        class="team-member-input" 
+                        value="${member}" 
+                        placeholder="Team member name"
+                        onchange="updateSingleTeamMember(${hodIndex}, ${memberIndex}, this.value)"
+                        ${canEditTeam ? '' : 'disabled'}
+                    >
+                    ${canEditTeam ? `
+                    <button 
+                        type="button" 
+                        class="remove-member-btn" 
+                        onclick="removeTeamMember(${hodIndex}, ${memberIndex})"
+                        title="Remove team member"
+                    >
+                        ✕
+                    </button>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function addTeamMember(hodIndex) {
+            // Check permission
+            const hodMember = currentData.teamMembers[hodIndex];
+            if (!canEditMember(hodMember.name)) {
+                alert('You do not have permission to edit this team.');
+                return;
+            }
+            
+            if (!currentData.teamMembers[hodIndex].teamMembers) {
+                currentData.teamMembers[hodIndex].teamMembers = [];
+            }
+            currentData.teamMembers[hodIndex].teamMembers.push('New Team Member');
+            
+            // Re-render the team members list
+            const listContainer = document.getElementById(`teamMembersList-${hodIndex}`);
+            listContainer.innerHTML = renderTeamMembersList(currentData.teamMembers[hodIndex].teamMembers, hodIndex);
+            
+            // Update the header preview
+            updateMemberPreview(hodIndex);
+        }
+
+        function removeTeamMember(hodIndex, memberIndex) {
+            // Check permission
+            const hodMember = currentData.teamMembers[hodIndex];
+            if (!canEditMember(hodMember.name)) {
+                alert('You do not have permission to edit this team.');
+                return;
+            }
+            
+            if (confirm('Are you sure you want to remove this team member?')) {
+                currentData.teamMembers[hodIndex].teamMembers.splice(memberIndex, 1);
+                
+                // Re-render the team members list
+                const listContainer = document.getElementById(`teamMembersList-${hodIndex}`);
+                listContainer.innerHTML = renderTeamMembersList(currentData.teamMembers[hodIndex].teamMembers, hodIndex);
+                
+                // Update the header preview
+                updateMemberPreview(hodIndex);
+            }
+        }
+
+        function updateSingleTeamMember(hodIndex, memberIndex, value) {
+            currentData.teamMembers[hodIndex].teamMembers[memberIndex] = value;
+        }
+
+        function addNewMember() {
+            const newMember = {
+                id: Date.now(),
+                name: 'New Member',
+                role: 'Head of Department',
+                description: 'Description for the new team member.',
+                avatar: 'N',
+                category: 'hod',
+                roleClass: 'department-role',
+                teamMembers: []
+            };
+            currentData.teamMembers.push(newMember);
+            renderTeamMembers();
+        }
+
+        function removeMember(index) {
+            if (confirm('Are you sure you want to remove this team member?')) {
+                currentData.teamMembers.splice(index, 1);
+                renderTeamMembers();
+            }
+        }
+
+        async function saveChanges() {
+            try {
+                // Update statistics
+                currentData.stats.studentCount = parseInt(document.getElementById('studentCount').value) || 0;
+                currentData.stats.countryCount = parseInt(document.getElementById('countryCount').value) || 0;
+                currentData.stats.eventCount = parseInt(document.getElementById('eventCount').value) || 0;
+                
+                // Update timestamp
+                currentData.lastUpdated = new Date().toISOString();
+                
+                // Save to MongoDB API - this will be visible to EVERYONE
+                console.log('Saving data to MongoDB:', { data: currentData });
+                const response = await fetch('/api/save-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data: currentData })
+                });
+                
+                const result = await response.json();
+                console.log('Save response:', result);
+                
+                if (response.ok && result.success) {
+                    showStatus('✅ Changes saved successfully! All visitors will now see your updates immediately!', 'success');
+                } else {
+                    throw new Error(result.error || 'Failed to save to MongoDB');
+                }
+                
+            } catch (error) {
+                console.error('Error saving data:', error);
+                showStatus('❌ Error saving changes. Please try again.', 'error');
+            }
+        }
+
+        function downloadBackup() {
+            const dataStr = JSON.stringify(currentData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `bidaya-backup-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showStatus('📥 Backup downloaded successfully!', 'success');
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.style.display = 'block';
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

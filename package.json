@@ -1,20 +1,35 @@
 {
-  "name": "bidaya-website",
-  "version": "1.0.0",
-  "description": "Bidaya organization website with admin panel",
-  "main": "index.html",
+  "name": "project-bidaya",
+  "version": "2.0.0",
+  "description": "Project Bidaya - Student Innovation Platform with Team Management and Admin Panel",
+  "main": "index.js",
   "scripts": {
-    "dev": "echo 'Development server'",
+    "start": "node index.js",
+    "dev": "vercel dev",
     "build": "echo 'No build step required'",
-    "start": "echo 'Static site deployed'"
+    "deploy": "vercel --prod",
+    "local": "python -m http.server 8000",
+    "test": "node test-api.html"
   },
+  "keywords": [
+    "student-innovation",
+    "team-management", 
+    "mongodb",
+    "vercel",
+    "admin-panel"
+  ],
+  "author": "Project Bidaya Team",
+  "license": "MIT",
   "dependencies": {
-    "mongodb": "^6.3.0"
+    "bcryptjs": "^2.4.3",
+    "mongodb": "^6.20.0"
   },
+  "devDependencies": {},
   "engines": {
-    "node": "22.x"
+    "node": ">=18.0.0"
   },
-  "keywords": ["bidaya", "admin", "website", "vercel"],
-  "author": "Bidaya Team",
-  "license": "MIT"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/x0as/project-bidaya-private.git"
+  }
 }

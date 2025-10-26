@@ -1,72 +1,86 @@
 const { MongoClient } = require('mongodb');
 
-const MONGODB_URI = 'mongodb+srv://muhammadhuzaifakhalidaziz:1Huzaifa3@discordbot.db3dr2k.mongodb.net/?retryWrites=true&w=majority';
-const DB_NAME = 'bidaya_website';
-
-let cachedClient = null;
-let cachedDb = null;
-
-async function connectToDatabase() {
-  if (cachedClient && cachedDb) {
-    return { client: cachedClient, db: cachedDb };
-  }
-
-  const client = new MongoClient(MONGODB_URI);
-  await client.connect();
-  const db = client.db(DB_NAME);
-
-  cachedClient = client;
-  cachedDb = db;
-
-  return { client, db };
-}
+const uri = process.env.MongoDB;
+const client = new MongoClient(uri);
 
 module.exports = async (req, res) => {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    // Add CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
+    try {
+        const { name, email, interest, message } = req.body;
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+        // Basic validation
+        if (!name || !email) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Name and email are required' 
+            });
+        }
 
-  try {
-    const { db } = await connectToDatabase();
-    
-    // Add new contact submission
-    const contactData = {
-      ...req.body,
-      timestamp: new Date().toISOString(),
-      id: Date.now()
-    };
-    
-    // Insert into contacts collection
-    const contactsCollection = db.collection('contact_submissions');
-    await contactsCollection.insertOne(contactData);
-    
-    // Also update the main data document to include this contact in the array
-    const mainCollection = db.collection('website_data');
-    await mainCollection.updateOne(
-      { _id: 'main_data' },
-      { 
-        $push: { contactSubmissions: contactData },
-        $set: { lastUpdated: new Date().toISOString() }
-      },
-      { upsert: true }
-    );
-    
-    res.status(200).json({ 
-      message: 'Contact form submitted successfully', 
-      data: contactData 
-    });
-  } catch (error) {
-    console.error('Error saving contact form:', error);
-    res.status(500).json({ error: 'Failed to save contact form' });
-  }
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Invalid email format' 
+            });
+        }
+
+        // Connect to MongoDB and save contact submission
+        await client.connect();
+        const db = client.db('bidaya');
+        const collection = db.collection('data');
+
+        // Create contact submission object
+        const contactSubmission = {
+            name,
+            email,
+            interest: interest || '',
+            message: message || '',
+            timestamp: new Date().toISOString(),
+            id: Date.now()
+        };
+
+        // Use $push to add contact submission without affecting other data
+        await collection.updateOne(
+            { _id: 'main' },
+            { 
+                $push: { contactSubmissions: contactSubmission },
+                $setOnInsert: {
+                    _id: 'main',
+                    users: {},
+                    teamMembers: [],
+                    statistics: { studentCount: 2000, countryCount: 50, eventCount: 100 }
+                }
+            },
+            { upsert: true }
+        );
+
+        console.log('Contact form submission saved to MongoDB:', contactSubmission);
+
+        res.status(200).json({
+            success: true,
+            message: 'Thank you for your message! We will get back to you soon.'
+        });
+
+    } catch (error) {
+        console.error('Contact form error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to submit contact form'
+        });
+    } finally {
+        await client.close();
+    }
 };

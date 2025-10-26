@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bidaya - Empowering Young Innovators</title>
+    <link rel="icon" type="image/png" href="images/bidaya-b-logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen">
+        <div class="logo-animation">
+            <img src="images/bidaya-full-logo.png" alt="Bidaya Initiative" class="loading-logo" />
+            <p>Connecting innovators worldwide...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="images/bidaya-b-logo.png" alt="Bidaya" class="navbar-logo" />
+                <span>Bidaya</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="join-btn">Join Us</button>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Empowering <span class="gradient-text">Young Innovators</span> Around the Globe</h1>
+                <p>Join Bidaya - the international student-led initiative that connects passionate young minds through debates, hackathons, and collaborative projects. Build real-world skills, earn recognition, and make lifelong connections.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary">Start Your Journey</button>
+                    <button class="btn-secondary">Learn More</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="student-count">2,000+</span>
+                        <span class="stat-label">Students Estimated</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="country-count">50+</span>
+                        <span class="stat-label">Nationalities</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="event-count">100+</span>
+                        <span class="stat-label">Events Planned</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-elements">
+                    <div class="float-card">💻 Hackathons</div>
+                    <div class="float-card">🎤 Debates</div>
+                    <div class="float-card">🤝 Collaboration</div>
+                    <div class="float-card">🏆 Recognition</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2>About Bidaya</h2>
+            <p class="section-subtitle">Where innovation meets opportunity</p>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>Our Mission</h3>
+                    <p>Bidaya is an international student-led initiative built to empower young people through debates, hackathons, collaborative projects, and creative opportunities. We provide students with resources, mentorship, prizes, and volunteering hours while helping them build real-world leadership and teamwork skills.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Global Significance</h3>
+                    <p>Bidaya hosts hackathons, debates, workshops and more to empower students with such opportunities and raise their voices, so that they are heard. Bidaya will assist ambitious students pave their future</p>
+                </div>
+                <div class="about-card">
+                    <h3>Founded by Students</h3>
+                    <p>Led by an exceptional <a href="team.html" class="team-link">team</a> of student leaders. Bidaya represents the next generation of tech leaders building communities that matter. We're not just participants in the future - we're creating it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="events-section">
+        <div class="container">
+            <h2>Our Events</h2>
+            <p class="section-subtitle">Where passion meets purpose</p>
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-icon">💻</div>
+                    <h3>Global Hackathons</h3>
+                    <p>12-24 hour coding marathons where students build innovative solutions to real-world problems. Win prizes, gain recognition, and connect with like-minded innovators.</p>
+                </div>
+                <div class="event-card">
+                    <div class="event-icon">🎤</div>
+                    <h3>Tech Debates</h3>
+                    <p>Structured debates on relevant technology topics. Develop critical thinking, public speaking skills, and deep understanding of tech ethics and innovation.</p>
+                </div>
+                <div class="event-card">
+                    <div class="event-icon">🛠️</div>
+                    <h3>Creative Workshops</h3>
+                    <p>Hands-on learning sessions covering everything from AI and machine learning to design thinking and entrepreneurship.</p>
+                </div>
+                <div class="event-card">
+                    <div class="event-icon">🤝</div>
+                    <h3>Collaborative Projects</h3>
+                    <p>Long-term projects where students from different countries work together to solve complex challenges. Build lasting connections and real-world experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community" class="community-section">
+        <div class="container">
+            <h2>Join Our Community</h2>
+            <p class="section-subtitle">Connect with innovators worldwide</p>
+            <div class="community-stats">
+                <div class="stat-item">
+                    <span class="stat-big">2,000+</span>
+                    <span class="stat-label">Students Expected</span>
+                    <span class="stat-desc">Globally</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-big">24/7</span>
+                    <span class="stat-label">Global Network</span>
+                    <span class="stat-desc">Always someone online</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-big">100%</span>
+                    <span class="stat-label">Free Access</span>
+                    <span class="stat-desc">for everyone!</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>Get Involved</h2>
+            <p class="section-subtitle">Ready to start your innovation journey?</p>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Join the Movement</h3>
+                    <p>Bidaya is more than just an initiative - it's a community of passionate young innovators ready to change the world. Whether you're a beginner or an expert, there's a place for you.</p>
+                    <div class="contact-methods">
+                        <div class="method">
+                            <span class="method-icon">📧</span>
+                            <div>
+                                <strong>Email Us</strong>
+                                <p>hello@bidaya.dev</p>
+                            </div>
+                        </div>
+                        <div class="method">
+                            <span class="method-icon">💬</span>
+                            <div>
+                                <strong>Slack</strong>
+                                <p>Join our active community</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <select name="interest" required>
+                        <option value="">What interests you most?</option>
+                        <option value="hackathons">Hackathons</option>
+                        <option value="debates">Debates</option>
+                        <option value="workshops">Workshops</option>
+                        <option value="collaboration">Collaborative Projects</option>
+                    </select>
+                    <textarea name="message" placeholder="Tell us about yourself and your interests" rows="4"></textarea>
+                    <button type="submit" class="submit-btn">Join Bidaya</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="images/bidaya-english-logo.png" alt="Bidaya Initiative" class="footer-logo" />
+                    </div>
+                    <p>Empowering young innovators around the globe through collaboration, learning, and real-world impact.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Events</h4>
+                        <a href="javascript:void(0)" onclick="showComingSoon('Hackathons')">Hackathons</a>
+                        <a href="javascript:void(0)" onclick="showComingSoon('Debates')">Debates</a>
+                        <a href="javascript:void(0)" onclick="showComingSoon('Workshops')">Workshops</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Community</h4>
+                        <a href="javascript:void(0)" onclick="showComingSoon('Slack Community')">Slack</a>
+                        <a href="javascript:void(0)" onclick="showComingSoon('Resources')">Resources</a>
+                        <a href="javascript:void(0)" onclick="showComingSoon('Mentorship Program')">Mentorship</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>About</h4>
+                        <a href="#about">Mission</a>
+                        <a href="team.html">Team</a>
+                        <a href="#contact">Contact</a>
+                        <a href="admin.html" style="color: #667eea; font-weight: 600;">🔧 Admin</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bidaya Initiative. Made with ❤️ by students, for students.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <script>
+        // Coming Soon popup function
+        function showComingSoon(featureName) {
+            const popup = document.createElement('div');
+            popup.className = 'coming-soon-popup';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <div class="popup-icon">🚀</div>
+                    <h3>Coming Soon!</h3>
+                    <p><strong>${featureName}</strong> is currently under development.</p>
+                    <p>We're working hard to bring you this exciting feature. Stay tuned!</p>
+                    <button onclick="closeComingSoon()" class="popup-btn">Got it!</button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+            
+            // Show popup with animation
+            setTimeout(() => {
+                popup.classList.add('show');
+            }, 10);
+        }
+        
+        function closeComingSoon() {
+            const popup = document.querySelector('.coming-soon-popup');
+            if (popup) {
+                popup.classList.remove('show');
+                setTimeout(() => {
+                    popup.remove();
+                }, 300);
+            }
+        }
+        
+        // Load statistics from MongoDB
+        async function loadStatistics() {
+            try {
+                console.log('Loading statistics from MongoDB...');
+                const response = await fetch('/api/get-data');
+                const data = await response.json();
+                
+                console.log('Received data:', data);
+                console.log('Statistics:', data.stats);
+                
+                if (data && data.stats) {
+                    // Update student count
+                    const studentElement = document.getElementById('student-count');
+                    if (studentElement) {
+                        const newValue = data.stats.studentCount ? data.stats.studentCount.toLocaleString() + '+' : '2,000+';
+                        studentElement.textContent = newValue;
+                        console.log('Updated student count to:', newValue);
+                    }
+                    
+                    // Update country count
+                    const countryElement = document.getElementById('country-count');
+                    if (countryElement) {
+                        const newValue = data.stats.countryCount ? data.stats.countryCount + '+' : '50+';
+                        countryElement.textContent = newValue;
+                        console.log('Updated country count to:', newValue);
+                    }
+                    
+                    // Update event count
+                    const eventElement = document.getElementById('event-count');
+                    if (eventElement) {
+                        const newValue = data.stats.eventCount ? data.stats.eventCount + '+' : '100+';
+                        eventElement.textContent = newValue;
+                        console.log('Updated event count to:', newValue);
+                    }
+                } else {
+                    console.log('No statistics found in data');
+                }
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                // Keep default values if MongoDB fails
+            }
+        }
+
+        // Load statistics when page loads and after loading screen
+        window.onload = function() {
+            // Load statistics immediately
+            loadStatistics();
+            
+            // Also load after loading screen is hidden (in case of timing issues)
+            setTimeout(() => {
+                loadStatistics();
+            }, 3000);
+        };
+    </script>
+</body>
+</html>
