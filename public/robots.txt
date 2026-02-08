@@ -1,0 +1,10 @@
+# robots.txt for bidaya.dev
+# Empowering Young Innovators Around the Globe
+
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://bidaya.dev/sitemap.xml
