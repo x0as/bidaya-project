@@ -31,7 +31,6 @@
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a href="team.html">Team</a></li>
                 <li><a href="#events">Events</a></li>
                 <li><a href="#community">Community</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -97,7 +96,7 @@
                 </div>
                 <div class="about-card">
                     <h3>Founded by Students</h3>
-                    <p>Led by an exceptional <a href="team.html" class="team-link">team</a> of student leaders. Bidaya represents the next generation of tech leaders building communities that matter. We're not just participants in the future - we're creating it.</p>
+                    <p>Led by an exceptional team of student leaders, Bidaya represents the next generation of tech leaders building communities that matter. We're not just participants in the future - we're creating it.</p>
                 </div>
             </div>
         </div>
@@ -178,13 +177,20 @@
                         <div class="method">
                             <span class="method-icon">💬</span>
                             <div>
-                                <strong>Slack</strong>
-                                <p>Join our active community</p>
+                                <strong>Discord</strong>
+                                <p><a href="https://discord.gg/NBExqjsE2Z" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Join our active community</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <form class="contact-form" id="contactForm">
+                <form class="contact-form" action="https://formsubmit.co/hello@bidaya.dev" method="POST">
+                    <!-- FormSubmit configuration -->
+                    <input type="hidden" name="_subject" value="New Bidaya Contact Form Submission">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="text" name="_honey" style="display:none">
+                    
+                    <!-- Form fields -->
                     <input type="text" name="name" placeholder="Your Name" required>
                     <input type="email" name="email" placeholder="Your Email" required>
                     <select name="interest" required>
@@ -220,14 +226,13 @@
                     </div>
                     <div class="link-group">
                         <h4>Community</h4>
-                        <a href="javascript:void(0)" onclick="showComingSoon('Slack Community')">Slack</a>
+                        <a href="https://discord.gg/NBExqjsE2Z" target="_blank" rel="noopener noreferrer">Discord</a>
                         <a href="javascript:void(0)" onclick="showComingSoon('Resources')">Resources</a>
                         <a href="javascript:void(0)" onclick="showComingSoon('Mentorship Program')">Mentorship</a>
                     </div>
                     <div class="link-group">
                         <h4>About</h4>
                         <a href="#about">Mission</a>
-                        <a href="team.html">Team</a>
                         <a href="#contact">Contact</a>
                         <a href="admin.html" style="color: #667eea; font-weight: 600;">🔧 Admin</a>
                     </div>

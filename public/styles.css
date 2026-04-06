@@ -119,7 +119,7 @@ body {
     width: 100px;
     height: 100px;
     background: var(--gradient);
-    border-radius: 20px;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -177,7 +177,7 @@ body {
     width: 45px;
     height: 45px;
     background: var(--gradient);
-    border-radius: 12px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -221,7 +221,7 @@ body {
     color: white;
     border: none;
     padding: 0.7rem 1.5rem;
-    border-radius: 25px;
+    border-radius: 3px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -304,7 +304,7 @@ body {
     color: white;
     border: none;
     padding: 1rem 2rem;
-    border-radius: 30px;
+    border-radius: 3px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -317,7 +317,7 @@ body {
     color: var(--text-primary);
     border: 2px solid var(--border-glass);
     padding: 1rem 2rem;
-    border-radius: 30px;
+    border-radius: 3px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -378,7 +378,7 @@ body {
     background: var(--bg-card);
     backdrop-filter: blur(10px);
     border: 1px solid var(--border-glass);
-    border-radius: 15px;
+    border-radius: 4px;
     padding: 1.5rem;
     font-size: 1.1rem;
     font-weight: 600;
@@ -459,7 +459,7 @@ section h2 {
     background: var(--bg-card);
     backdrop-filter: blur(10px);
     border: 1px solid var(--border-glass);
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 2rem;
     transition: all 0.3s ease;
 }
@@ -506,7 +506,7 @@ section h2 {
     box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
     transform: scale(1.05);
     padding: 4px 8px;
-    border-radius: 6px;
+    border-radius: 3px;
 }
 
 /* Team Section */
@@ -567,7 +567,7 @@ section h2 {
     background: var(--bg-card);
     backdrop-filter: blur(10px);
     border: 1px solid var(--border-glass);
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 2rem;
     text-align: center;
     transition: all 0.3s ease;
@@ -716,7 +716,7 @@ section h2 {
 .role {
     display: inline-block !important;
     padding: 0.6rem 1.2rem;
-    border-radius: 20px;
+    border-radius: 5px;
     font-size: 0.95rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -790,7 +790,7 @@ section h2 {
     background: var(--bg-glass);
     color: var(--text-primary);
     padding: 0.3rem 0.8rem;
-    border-radius: 12px;
+    border-radius: 4px;
     font-size: 0.85rem;
     font-weight: 500;
     border: 1px solid var(--border-glass);
@@ -807,7 +807,7 @@ section h2 {
     text-align: center;
     padding: 3rem 2rem;
     background: var(--bg-card);
-    border-radius: 20px;
+    border-radius: 5px;
     border: 1px solid var(--border-glass);
     margin-top: 3rem;
 }
@@ -848,7 +848,7 @@ section h2 {
     background: var(--bg-card);
     backdrop-filter: blur(10px);
     border: 1px solid var(--border-glass);
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 2rem;
     text-align: center;
     transition: all 0.3s ease;
@@ -902,7 +902,7 @@ section h2 {
     background: var(--bg-card);
     backdrop-filter: blur(10px);
     border: 1px solid var(--border-glass);
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 2rem;
     text-align: center;
     transition: all 0.3s ease;
@@ -965,7 +965,7 @@ section h2 {
     gap: 1rem;
     padding: 1rem;
     background: var(--bg-card);
-    border-radius: 15px;
+    border-radius: 4px;
     border: 1px solid var(--border-glass);
     transition: all 0.3s ease;
 }
@@ -983,7 +983,7 @@ section h2 {
     background: var(--bg-card);
     backdrop-filter: blur(10px);
     border: 1px solid var(--border-glass);
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 2rem;
     display: flex;
     flex-direction: column;
@@ -997,7 +997,7 @@ section h2 {
     padding: 1rem;
     background: var(--bg-glass);
     border: 1px solid var(--border-glass);
-    border-radius: 10px;
+    border-radius: 3px;
     color: var(--text-primary);
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -1035,7 +1035,7 @@ section h2 {
     color: white;
     border: none;
     padding: 1rem 2rem;
-    border-radius: 10px;
+    border-radius: 3px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -1135,7 +1135,7 @@ section h2 {
     background: var(--bg-card);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-glass);
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 3rem;
     text-align: center;
     max-width: 400px;
@@ -1183,7 +1183,7 @@ section h2 {
     color: white;
     border: none;
     padding: 1rem 2rem;
-    border-radius: 15px;
+    border-radius: 4px;
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
@@ -1326,7 +1326,7 @@ section h2 {
         padding: 1rem 1.5rem;
         display: block;
         width: 100%;
-        border-radius: 12px;
+        border-radius: 4px;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--border-glass);
         transition: all 0.3s ease;
@@ -1539,7 +1539,7 @@ section h2 {
         font-size: 0.95rem;
         padding: 0.3rem 0;
         display: block;
-        border-radius: 6px;
+        border-radius: 3px;
         padding-left: 0.5rem;
         transition: all 0.3s ease;
     }
@@ -1655,7 +1655,7 @@ section h2 {
     .link-group {
         padding: 1.5rem 1rem;
         background: var(--bg-card);
-        border-radius: 15px;
+        border-radius: 4px;
         border: 1px solid var(--border-glass);
     }
     
@@ -1671,7 +1671,7 @@ section h2 {
         padding: 0.8rem 1rem;
         margin: 0.3rem 0;
         background: rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
+        border-radius: 3px;
         border: 1px solid transparent;
         transition: all 0.3s ease;
     }

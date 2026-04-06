@@ -97,59 +97,8 @@ function initScrollEffects() {
 
 // Form Handling
 function initFormHandling() {
-    const contactForm = document.getElementById('contactForm');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            // Show loading state
-            submitBtn.textContent = 'Submitting...';
-            submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.7';
-            
-            // Collect form data
-            const formData = {
-                name: this.querySelector('[name="name"]').value,
-                email: this.querySelector('[name="email"]').value,
-                interest: this.querySelector('[name="interest"]').value,
-                message: this.querySelector('[name="message"]').value,
-                timestamp: new Date().toISOString(),
-                id: Date.now()
-            };
-            
-            try {
-                // Submit to MongoDB API
-                const response = await fetch('/api/submit-contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showSuccessMessage();
-                    this.reset();
-                } else {
-                    throw new Error(result.error || 'Failed to submit form');
-                }
-            } catch (error) {
-                console.error('Failed to submit form:', error);
-                showErrorMessage(error.message || 'Failed to submit form. Please try again.');
-            }
-            
-            // Reset button
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-            submitBtn.style.opacity = '1';
-        });
-    }
+    // Note: Contact form now uses FormSubmit.co for submissions (no MongoDB needed)
+    // FormSubmit handles the submission directly via HTML form action
     
     // Add focus effects to form inputs
     const formInputs = document.querySelectorAll('.contact-form input, .contact-form select, .contact-form textarea');
