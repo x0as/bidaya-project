@@ -96,11 +96,10 @@ function initScrollEffects() {
 }
 
 // Form Handling
+// Note: Contact form now uses FormSubmit.co for direct email submissions (no MongoDB backend needed)
+// FormSubmit handles the submission directly via HTML form action attribute
 function initFormHandling() {
-    // Note: Contact form now uses FormSubmit.co for submissions (no MongoDB needed)
-    // FormSubmit handles the submission directly via HTML form action
-    
-    // Add focus effects to form inputs
+    // Add visual focus effects to form inputs for better UX
     const formInputs = document.querySelectorAll('.contact-form input, .contact-form select, .contact-form textarea');
     formInputs.forEach(input => {
         input.addEventListener('focus', function() {
