@@ -1101,6 +1101,16 @@ section h2 {
     transform: translateX(5px);
 }
 
+.discord-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.discord-link:hover {
+    color: var(--orange);
+}
+
 .footer-bottom {
     text-align: center;
     padding-top: 2rem;

@@ -45,7 +45,7 @@ project-bidaya/
 │   └── ...
 ├── public/                 # Frontend assets
 │   ├── index.html         # Main website
-│   ├── team.html          # Team showcase
+│   ├── team.html          # Team showcase (removed)
 │   ├── admin.html         # Admin panel
 │   ├── styles.css         # Main styles
 │   ├── script.js          # Frontend logic
