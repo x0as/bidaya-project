@@ -66,7 +66,27 @@ project-bidaya/
 Create a `.env` file:
 ```env
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/
+
+# Contact form auto-forwarding (free SMTP setup)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+SMTP_FROM=Bidaya Contact <your-email@gmail.com>
+
+# Comma-separated default recipient inboxes
+CONTACT_FORWARD_TO=hello@bidaya.dev,team@bidaya.dev
+
+# Optional: route specific interests to extra inboxes (JSON)
+# Example keys can match form interest values like "hackathons" or "workshops"
+CONTACT_FORWARD_MAP={"hackathons":"hackathons@bidaya.dev","workshops":["events@bidaya.dev","ops@bidaya.dev"]}
 ```
+
+Notes:
+- `CONTACT_FORWARD_TO` is the main free auto-forward list.
+- `CONTACT_FORWARD_MAP` is optional and lets you forward specific interests to specific emails.
+- For Gmail, use an App Password (not your normal login password).
 
 ### **Local Development**
 ```bash

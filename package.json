@@ -13,7 +13,7 @@
   },
   "keywords": [
     "student-innovation",
-    "team-management", 
+    "team-management",
     "mongodb",
     "vercel",
     "admin-panel"
@@ -22,9 +22,9 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "mongodb": "^6.20.0"
+    "mongodb": "^6.20.0",
+    "nodemailer": "^8.0.7"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=18.0.0"
   },

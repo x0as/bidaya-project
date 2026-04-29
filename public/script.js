@@ -103,51 +103,8 @@ function initFormHandling() {
         contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            // Show loading state
-            submitBtn.textContent = 'Submitting...';
-            submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.7';
-            
-            // Collect form data
-            const formData = {
-                name: this.querySelector('[name="name"]').value,
-                email: this.querySelector('[name="email"]').value,
-                interest: this.querySelector('[name="interest"]').value,
-                message: this.querySelector('[name="message"]').value,
-                timestamp: new Date().toISOString(),
-                id: Date.now()
-            };
-            
-            try {
-                // Submit to MongoDB API
-                const response = await fetch('/api/submit-contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showSuccessMessage();
-                    this.reset();
-                } else {
-                    throw new Error(result.error || 'Failed to submit form');
-                }
-            } catch (error) {
-                console.error('Failed to submit form:', error);
-                showErrorMessage(error.message || 'Failed to submit form. Please try again.');
-            }
-            
-            // Reset button
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-            submitBtn.style.opacity = '1';
+            // Show maintenance message
+            showMaintenanceMessage();
         });
     }
     
@@ -296,6 +253,37 @@ function showErrorMessage(message) {
             }, 500);
         }
     }, 5000);
+}
+
+// Maintenance Message
+function showMaintenanceMessage() {
+    const popup = document.createElement('div');
+    popup.className = 'coming-soon-popup';
+    popup.innerHTML = `
+        <div class="popup-content">
+            <div class="popup-icon">🔧</div>
+            <h3>Form Under Maintenance</h3>
+            <p>We're temporarily maintaining the contact form. Please reach out to us using the options below:</p>
+            <p style="margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.9;"><strong>Email:</strong> <a href="mailto:hello@bidaya.dev" style="color: var(--orange); text-decoration: none;">hello@bidaya.dev</a></p>
+            <p style="font-size: 0.9rem; opacity: 0.9;"><strong>Discord:</strong> <a href="https://discord.gg/VzKjyhTWy4" target="_blank" rel="noopener noreferrer" style="color: var(--orange); text-decoration: none;">Join our server</a></p>
+            <button onclick="closeMaintenancePopup()" class="popup-btn">Got it!</button>
+        </div>
+    `;
+    document.body.appendChild(popup);
+    
+    setTimeout(() => {
+        popup.classList.add('show');
+    }, 10);
+}
+
+function closeMaintenancePopup() {
+    const popup = document.querySelector('.coming-soon-popup');
+    if (popup) {
+        popup.classList.remove('show');
+        setTimeout(() => {
+            popup.remove();
+        }, 300);
+    }
 }
 
 // Floating Cards Animation Enhancement
