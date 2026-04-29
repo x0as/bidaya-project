@@ -259,16 +259,16 @@ function showErrorMessage(message) {
 function showMaintenanceMessage() {
     const popup = document.createElement('div');
     popup.className = 'coming-soon-popup';
-    popup.innerHTML = `
-        <div class="popup-content">
-            <div class="popup-icon">🔧</div>
-            <h3>Form Under Maintenance</h3>
-            <p>We're temporarily maintaining the contact form. Please reach out to us using the options below:</p>
-            <p style="margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.9;"><strong>Email:</strong> <a href="mailto:hello@bidaya.dev" style="color: var(--orange); text-decoration: none;">hello@bidaya.dev</a></p>
-            <p style="font-size: 0.9rem; opacity: 0.9;"><strong>Discord:</strong> <a href="https://discord.gg/VzKjyhTWy4" target="_blank" rel="noopener noreferrer" style="color: var(--orange); text-decoration: none;">Join our server</a></p>
-            <button onclick="closeMaintenancePopup()" class="popup-btn">Got it!</button>
-        </div>
-    `;
+        popup.innerHTML = `
+            <div class="popup-content">
+                <div class="popup-icon">🔧</div>
+                <h3>The contact forms are under maintenance</h3>
+                <p>Contact us instead via email or join our Discord for help:</p>
+                <p style="margin-top: 1rem; font-size: 0.95rem; opacity: 0.95;"><strong>Email:</strong> <a href="mailto:hello@bidaya.dev" style="color: var(--orange); text-decoration: none;">hello@bidaya.dev</a></p>
+                <p style="font-size: 0.95rem; opacity: 0.95;"><strong>Discord:</strong> <a href="https://discord.gg/VzKjyhTWy4" target="_blank" rel="noopener noreferrer" style="color: var(--orange); text-decoration: none;">Join our server</a></p>
+                <div style="margin-top:1.2rem; display:flex; gap:8px; justify-content:center;"><button onclick="closeMaintenancePopup()" class="popup-btn">Close</button></div>
+            </div>
+        `;
     document.body.appendChild(popup);
     
     setTimeout(() => {
