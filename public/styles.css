@@ -200,12 +200,18 @@ body {
     background: var(--gradient);
     color: white;
     border: none;
-    padding: 0.7rem 1.5rem;
+    padding: 0.5rem 1.5rem;
     border-radius: 25px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: var(--shadow-glow);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    height: 40px;
 }
 
 .join-btn:hover {
