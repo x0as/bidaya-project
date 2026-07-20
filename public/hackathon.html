@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under The Surface · Hackathon 2026</title>
+    <link rel="icon" type="image/png" href="images/bidaya-b-logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ===== Hackathon-specific styles ===== */
+        .hackathon-page {
+            background: var(--bg-dark);
+            background-image:
+                radial-gradient(ellipse at 20% 80%, rgba(255, 138, 0, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(128, 0, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 0, 128, 0.04) 0%, transparent 70%);
+            min-height: 100vh;
+        }
+
+        /* ===== Notification Popup ===== */
+        .notification-popup {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            max-width: 380px;
+            width: 100%;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 138, 0, 0.2);
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            transform: translateY(0);
+            opacity: 1;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .notification-popup.hidden {
+            transform: translateY(120px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .notification-popup .notif-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .notification-popup .notif-header .icon {
+            font-size: 1.3rem;
+        }
+
+        .notification-popup .notif-header .title {
+            font-weight: 700;
+            color: var(--orange);
+            font-size: 0.95rem;
+        }
+
+        .notification-popup .notif-body {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+
+        .notification-popup .notif-body strong {
+            color: var(--text-primary);
+        }
+
+        .notification-popup .notif-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .notification-popup .notif-actions .btn-notif {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .notification-popup .notif-actions .btn-notif:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 138, 0, 0.3);
+        }
+
+        .notification-popup .notif-actions .btn-dismiss {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-glass);
+            padding: 0.4rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .notification-popup .notif-actions .btn-dismiss:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .notification-popup .notif-close {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.8rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            padding: 0.2rem 0.4rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .notification-popup .notif-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* ===== Hero ===== */
+        .hackathon-hero {
+            padding: 100px 0 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hackathon-hero .depth-badge {
+            display: inline-block;
+            background: rgba(255, 138, 0, 0.15);
+            border: 1px solid rgba(255, 138, 0, 0.2);
+            color: var(--orange);
+            padding: 0.5rem 1.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hackathon-hero .depth-badge .new-tag {
+            display: inline-block;
+            background: #ff6b35;
+            color: #fff;
+            font-size: 0.55rem;
+            font-weight: 800;
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            margin-left: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            vertical-align: middle;
+            animation: pulseNew 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseNew {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.95); }
+        }
+
+        .hackathon-hero h1 {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.05;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(255, 138, 0, 0.15);
+        }
+
+        .hackathon-hero .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.02em;
+        }
+
+        .hackathon-hero .date-block {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 0.6rem 1.8rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hackathon-hero .date-block strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ===== Buttons ===== */
+        .btn-hackathon {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-glow);
+            position: relative;
+            z-index: 1;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-hackathon:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(255, 138, 0, 0.4);
+        }
+
+        .btn-hackathon .arrow {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-hackathon:hover .arrow {
+            transform: translateX(6px);
+        }
+
+        .btn-outline {
+            display: inline-block;
+            background: transparent;
+            color: var(--orange);
+            border: 1px solid rgba(255, 138, 0, 0.3);
+            padding: 0.6rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 138, 0, 0.1);
+            border-color: var(--orange);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary-outline {
+            display: inline-block;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-glass);
+            padding: 0.6rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-secondary-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-secondary);
+            transform: translateY(-2px);
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== Floating bubbles ===== */
+        .bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 138, 0, 0.08), rgba(255, 0, 128, 0.03));
+            border: 1px solid rgba(255, 138, 0, 0.05);
+            animation: rise var(--duration, 12s) ease-in-out infinite;
+        }
+
+        .bubble:nth-child(1) { width: 80px; height: 80px; left: 5%; bottom: -80px; --duration: 14s; animation-delay: 0s; }
+        .bubble:nth-child(2) { width: 50px; height: 50px; left: 15%; bottom: -50px; --duration: 10s; animation-delay: 2s; }
+        .bubble:nth-child(3) { width: 120px; height: 120px; right: 10%; bottom: -120px; --duration: 18s; animation-delay: 4s; }
+        .bubble:nth-child(4) { width: 40px; height: 40px; right: 25%; bottom: -40px; --duration: 8s; animation-delay: 1s; }
+        .bubble:nth-child(5) { width: 60px; height: 60px; left: 45%; bottom: -60px; --duration: 12s; animation-delay: 3s; }
+        .bubble:nth-child(6) { width: 30px; height: 30px; left: 75%; bottom: -30px; --duration: 9s; animation-delay: 5s; }
+        .bubble:nth-child(7) { width: 100px; height: 100px; left: 30%; bottom: -100px; --duration: 16s; animation-delay: 2.5s; }
+        .bubble:nth-child(8) { width: 45px; height: 45px; right: 5%; bottom: -45px; --duration: 11s; animation-delay: 4.5s; }
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(0.8); opacity: 0.2; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+        }
+
+        /* ===== Tabs ===== */
+        .tabs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+            margin: 2rem 0 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tab-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: var(--gradient);
+            border-color: transparent;
+            color: #ffffff;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .tab-btn.active:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(255, 138, 0, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Content sections ===== */
+        .hackathon-section {
+            padding: 2rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hackathon-section h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .hackathon-section .section-sub {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .hack-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .hack-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 138, 0, 0.15);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .hack-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .hack-card h3 .accent {
+            color: var(--orange);
+        }
+
+        .hack-card p,
+        .hack-card li {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .hack-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .hack-card ul li {
+            padding: 0.3rem 0 0.3rem 1.5rem;
+            position: relative;
+        }
+
+        .hack-card ul li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--orange);
+        }
+
+        .rules-grid,
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .timeline-item .label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .timeline-item .value {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .timeline-item .value strong {
+            color: var(--orange);
+            font-weight: 600;
+        }
+
+        /* ===== Prize cards ===== */
+        .prize-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .prize-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .prize-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 138, 0, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .prize-card .tier {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .prize-card .tier.gold { 
+            background: linear-gradient(135deg, #ffd700, #ffb800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .prize-card .tier.all { 
+            color: var(--orange); 
+        }
+
+        .prize-card .tier-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .prize-card h4 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0.3rem 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .prize-card .prize-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-top: 0.3rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .prize-card .prize-note {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 0.8rem;
+            font-style: italic;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .prize-card.approved {
+            border-color: rgba(255, 138, 0, 0.15);
+        }
+
+        .prize-card.winner {
+            border-color: rgba(255, 215, 0, 0.15);
+            background: rgba(255, 215, 0, 0.04);
+        }
+
+        .prize-card .badge-check {
+            display: inline-block;
+            background: rgba(0, 200, 100, 0.15);
+            color: #5ddfa0;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .prize-card .badge-star {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ===== Highlight styles ===== */
+        .highlight-warning {
+            padding: 1rem;
+            background: rgba(255, 138, 0, 0.06);
+            border-radius: 12px;
+            border-left: 3px solid var(--orange);
+            margin: 0.8rem 0;
+        }
+
+        .highlight-warning .icon {
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        .highlight-warning p {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .highlight-warning p strong {
+            color: var(--text-primary);
+        }
+
+        .highlight-danger {
+            padding: 1rem;
+            background: rgba(255, 0, 0, 0.05);
+            border-radius: 12px;
+            border-left: 0px solid #ff4444;
+            margin: 0.8rem 0;
+        }
+
+        .highlight-danger .icon {
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+
+        .highlight-danger p {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .highlight-danger p strong {
+            color: #ff6b6b;
+        }
+
+        .highlight-info {
+            padding: 1rem;
+            background: rgba(0, 200, 255, 0.05);
+            border-radius: 12px;
+            border-left: 0px solid #00ccff;
+            margin: 0.8rem 0;
+        }
+
+        .highlight-info p {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .highlight-info p strong {
+            color: var(--text-primary);
+        }
+
+        .highlight-success {
+            padding: 1rem;
+            background: rgba(0, 200, 100, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid #5ddfa0;
+            margin: 0.8rem 0;
+        }
+
+        .highlight-success p {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .highlight-success p strong {
+            color: #5ddfa0;
+        }
+
+        /* ===== Code block ===== */
+        .code-block {
+            background: var(--bg-darker);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            color: #a0d4ff;
+            overflow-x: auto;
+            border: 1px solid var(--border-glass);
+            margin: 0.8rem 0;
+            white-space: pre;
+            tab-size: 2;
+            line-height: 1.7;
+        }
+
+        .code-block .comment {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .code-block .tag { color: #ff7b72; }
+        .code-block .attr { color: #d2a8ff; }
+        .code-block .string { color: #a5d6ff; }
+        .code-block .func { color: #ffcb6b; }
+        .code-block .keyword { color: #c792ea; }
+        .code-block .variable { color: #eeffff; }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(255, 138, 0, 0.15);
+        }
+
+        .faq-item .question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .faq-item .answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .faq-item.open .answer {
+            max-height: 300px;
+            padding-top: 0.8rem;
+        }
+
+        .faq-item .toggle {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.open .toggle {
+            transform: rotate(45deg);
+            color: var(--orange);
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border-glass);
+            margin: 2.5rem 0;
+        }
+
+        /* ===== Anchor offset for hackatime section ===== */
+        #hackatime-section {
+            scroll-margin-top: 80px;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .hackathon-hero { padding: 100px 0 30px; }
+            .timeline-grid { grid-template-columns: 1fr; gap: 0.4rem; }
+            .rules-grid, .criteria-grid, .prize-grid { grid-template-columns: 1fr; }
+            .hack-card { padding: 1.5rem; }
+            .bubble { display: none; }
+            .tabs-container { gap: 0.5rem; }
+            .tab-btn { padding: 0.6rem 1.4rem; font-size: 0.85rem; }
+            .code-block { font-size: 0.7rem; padding: 0.8rem 1rem; white-space: pre-wrap; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .notification-popup {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+                max-width: none;
+                width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hackathon-hero .date-block { font-size: 0.8rem; padding: 0.4rem 1rem; }
+            .btn-hackathon { padding: 0.6rem 1.4rem; font-size: 0.85rem; }
+            .code-block { font-size: 0.65rem; padding: 0.6rem 0.8rem; }
+            .tabs-container { flex-wrap: wrap; }
+            .tab-btn { flex: 1 1 auto; min-width: 70px; text-align: center; padding: 0.5rem 1rem; font-size: 0.8rem; }
+            .notification-popup { padding: 1rem; }
+            .notification-popup .notif-actions { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body class="hackathon-page">
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="images/bidaya-b-logo.png" alt="Bidaya" class="navbar-logo" />
+                <span>Bidaya</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="hackathon.html" class="active">Hackathon</a></li>
+                <li><a href="index.html#community">Community</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button class="join-btn">Join Us</button>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+
+            <!-- ===== HERO ===== -->
+            <section class="hackathon-hero">
+                <div class="bubbles">
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                </div>
+
+                <div class="depth-badge">
+                    Brought to you by Bidaya
+                    <span class="new-tag">New</span>
+                </div>
+
+                <h1>Under The Surface</h1>
+                <p class="subtitle">A Solo-Builder Web REACT UI Hackathon</p>
+
+                <div class="date-block">
+                    <strong>24–26 July 2026</strong> · Open to all skill levels
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="https://tally.so/r/xX10z9" target="_blank" class="btn-hackathon">
+                        Register <span class="arrow">→</span>
+                    </a>
+                    <a href="https://underthesurface.vercel.app" target="_blank" class="btn-secondary-outline">
+                        Example Site ↗
+                    </a>
+                </div>
+            </section>
+
+            <!-- ===== TABS ===== -->
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="overview">Overview</button>
+                <button class="tab-btn" data-tab="prizes">Prizes</button>
+                <button class="tab-btn" data-tab="criteria">Criteria</button>
+                <button class="tab-btn" data-tab="faq">FAQ</button>
+            </div>
+
+            <!-- ===== TAB: OVERVIEW ===== -->
+            <div id="tab-overview" class="tab-content active">
+                <section class="hackathon-section" style="padding-top: 0;">
+                    <!-- Welcome -->
+                    <div class="hack-card">
+                        <h3>Welcome, young builder.</h3>
+                        <p>
+                            We are glad to see you considering joining Bidaya's first ever hackathon!
+                            This guide has everything you need to know before, during, and even after
+                            the hackathon: how it works, how you're judged, and how to make the most
+                            of your time. Read carefully, then build relentlessly. <strong style="color: var(--text-primary);">Best of luck!</strong>
+                        </p>
+                    </div>
+
+                    <!-- Welcome extended -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>Welcome</h3>
+                            <p>
+                                <em>Thank you</em> for signing up to build with us. Over the course of this
+                                hackathon, you'll take an idea from a blank screen to a working,
+                                deployed website; entirely on your own.
+                            </p>
+                            <p>
+                                No teams, no hiding behind a teammate's code. Just you, your ideas,
+                                and however many cups of tea (or energy drinks) it takes.
+                            </p>
+                            <p>
+                                This is your chance to prove what you can build under pressure, learn
+                                a ton in a short amount of time, and walk away with something real for
+                                your portfolio. Whatever your skill level, the goal is the same: start,
+                                iterate, ship.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- About Organizer -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>About the Organizer</h3>
+                            <p>
+                                This hackathon is brought to you by <strong style="color: var(--text-primary);">Bidaya</strong>, a student empowerment
+                                nonprofit focused on helping students build real skills through
+                                mentorship, projects, and hands-on learning.
+                            </p>
+                            <p>
+                                You can find out more about us at <a href="https://bidaya.dev" style="color: var(--orange); text-decoration: none; font-weight: 600;">bidaya.dev</a>.
+                                Be sure to follow us on Instagram <strong style="color: var(--text-primary);">@bidaya.dev</strong> to stay updated on new events
+                                and initiatives. Join our Discord too for the opportunity to connect with
+                                other ambitious students and find further details about our initiatives.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Event Format -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>Event Format</h3>
+                            <ul>
+                                <li>
+                                    <strong style="color: var(--text-primary);">Solo only:</strong> Every participant competes solo. No teams.
+                                    You are the designer, developer, and project manager. Solo means solo —
+                                    use of AI in any form (code generation, design, writing, or otherwise)
+                                    is strictly prohibited, with <strong style="color: var(--text-primary);">zero tolerance</strong>.
+                                    Judges will use decided methods to detect usage of AI, and any detected
+                                    use will result in immediate disqualification from prizes.
+                                </li>
+                                <li>
+                                    <strong style="color: var(--text-primary);">Theme:</strong> The broad theme is the Ocean.
+                                    The specific topic within that theme will be revealed later, closer to the hackathon,
+                                    and will be posted on our website (<a href="https://bidaya.dev" style="color: var(--orange); text-decoration: none; font-weight: 600;">bidaya.dev</a>)
+                                    as well as shared with the Bidaya Discord. Do not start building too much too early,
+                                    as resonance with the specific topic is crucial, regardless of the broader theme.
+                                </li>
+                                <li>
+                                    <strong style="color: var(--text-primary);">Deliverable:</strong> Your final submission must be a website.
+                                    This can be a web app, an interactive experience, a game, a tool, or anything
+                                    that runs in a browser and fits the topic.
+                                </li>
+                                <li>
+                                    <strong style="color: var(--text-primary);">Tools:</strong> You're welcome to use any language, framework, or library.
+                                    Note that AI coding tools are not allowed. Usage of such tools will affect prize eligibility.
+                                    <strong style="color: var(--text-primary);">To be eligible for a prize, your website must be built using React.</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Get the Topic Early -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card" style="border-color: rgba(255, 138, 0, 0.15);">
+                            <h3>Get the Topic Early</h3>
+                            <p>
+                                The specific topic (within the ocean theme) will be shared early with
+                                members of the Bidaya Discord server before it's announced anywhere else.
+                                It will also be posted on our website (<a href="https://bidaya.dev" style="color: var(--orange); text-decoration: none; font-weight: 600;">bidaya.dev</a>)
+                                at the official reveal time. We'd again recommend waiting for the specific topic
+                                rather than starting on the broad theme alone — relevance to the exact topic
+                                matters a lot in judging, and building toward the wrong angle can cost you points later.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>Timeline</h3>
+                            <div class="timeline-grid">
+                                <div class="timeline-item">
+                                    <span class="label">Registration closes</span>
+                                    <span class="value"><strong>23 July</strong> 11:59 PM GMT+4</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="label">Topic Reveal</span>
+                                    <span class="value"><strong>24 July</strong> 10:00 AM GMT+4</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="label">Optional Crash Course</span>
+                                    <span class="value">TBD</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="label">Submissions Deadline</span>
+                                    <span class="value"><strong>26 July</strong> 10:00 AM GMT+4</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="label">Shortlisted Participants Announced</span>
+                                    <span class="value">TBD</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="label">Winners Announced</span>
+                                    <span class="value">TBD</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rules & Eligibility -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>Rules and Eligibility</h3>
+                            <ul>
+                                <li>Work must be entirely your own, done individually and during the official hackathon window. Any aspect copied or adapted from somebody else must be clearly labelled.</li>
+                                <li>Submissions must clearly connect to the topic — judges will factor this into scoring.</li>
+                                <li>You must submit a working link to your site, your source code repository on GitHub, and an optional 60-second video explaining your project before the deadline.</li>
+                                <li>The submission deadline is strict. No extensions, no exceptions; plan your last few hours accordingly.</li>
+                                <li>Plagiarism, copying another participant's project, or misrepresenting authorship results in disqualification.</li>
+                                <li>Be respectful. Harassment or unsportsmanlike conduct toward other participants, mentors, or judges will not be tolerated.</li>
+                                <li>Judges' decision on all matters is final.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- To Be Eligible for a Prize -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card" style="border-color: rgba(255, 138, 0, 0.15);">
+                            <h3 style="color: var(--orange);">To Be Eligible for a Prize</h3>
+
+                            <div class="highlight-danger">
+                                <p><span class="icon">⚠</span> <strong>No AI use. Zero tolerance.</strong></p>
+                                <p style="margin-top: 0.5rem;">Your code and design must be written entirely by you, by hand, with <strong style="color: var(--text-primary);">zero use of AI</strong> code generation, AI design tools, or AI assistants of any kind, at any stage of building your project. This includes AI autocomplete/copilot-style tools, AI chatbots for code or design help, and AI website builders. This is strictly enforced, and any confirmed use of AI will result in a <strong style="color: #ff6b6b;">permanent ban from all future Bidaya events</strong>, in addition to disqualification from this one.</p>
+                            </div>
+
+                            <div class="highlight-info">
+                                <p><span class="icon">⏱</span> <strong>Minimum 3 hours invested</strong></p>
+                                <p style="margin-top: 0.5rem;">Tracked with <strong style="color: var(--text-primary);">Hackatime</strong>. Hackatime automatically tracks your coding time in the background. It's free and takes a couple of minutes to set up.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Installing Hackatime -->
+                    <div id="hackatime-section" style="margin-top: 1.5rem;">
+                        <div class="hack-card" style="border-color: rgba(0, 200, 255, 0.15); border-left: 3px solid #00ccff;">
+                            <h3 style="color: #00ccff;">Installing Hackatime</h3>
+                            <ol style="color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; font-family: 'Inter', sans-serif;">
+                                <li>Create a free account at <a href="https://hackatime.hackclub.com" target="_blank" style="color: var(--orange); text-decoration: none; font-weight: 600;">hackatime.hackclub.com</a> and grab your API key from your dashboard.</li>
+                                <li>Install the WakaTime extension for your code editor (VS Code, JetBrains, Vim, and others are all supported).</li>
+                                <li>In the extension settings, enter your Hackatime API key and set the API URL to the Hackatime endpoint shown on your dashboard.</li>
+                                <li>Start coding as normal — your time is logged automatically in the background. Double check your dashboard shows activity before you submit.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Registration & Submission Links -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card" style="border-color: rgba(255, 138, 0, 0.15);">
+                            <h3>Registration and Submission</h3>
+                            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem;">
+                                <a href="https://tally.so/r/xX10z9" target="_blank" class="btn-hackathon" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">
+                                    Register →
+                                </a>
+                                <a href="https://tally.so/r/7RzYEP" target="_blank" class="btn-outline" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">
+                                    Submission Form →
+                                </a>
+                            </div>
+                            <div class="highlight-info" style="margin-top: 1rem;">
+                                <p><span class="icon">📌</span> <strong>Submission deadline:</strong> 26 July 10:00 AM GMT+4 — strict, no extensions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- How to Submit -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>How to Submit</h3>
+                            <ol style="color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; font-family: 'Inter', sans-serif;">
+                                <li><strong style="color: var(--text-primary);">Deploy your site</strong> — make it live and accessible via a public link (Vercel, Netlify, GitHub Pages, or similar all work great). <em style="color: var(--text-muted);">(Do not expect a localhost project to be judged.)</em></li>
+                                <li><strong style="color: var(--text-primary);">Push your source code</strong> to a public repository.</li>
+                                <li><strong style="color: var(--text-primary);">Fill out the submission form</strong> — <a href="https://tally.so/r/7RzYEP" target="_blank" style="color: var(--orange); text-decoration: none; font-weight: 600;">Click here</a> — before the deadline.</li>
+                                <li><strong style="color: var(--text-primary);">Answer all questions</strong> on the submission form including a short write-up (3-5 sentences) describing your project and how it fits the topic.</li>
+                            </ol>
+                            <div class="highlight-danger" style="margin-top: 1rem;">
+                                <p><span class="icon">⏰</span> <strong>The deadline is strict.</strong> No late submissions will be accepted or judged, no matter the reason — build your submission buffer in.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== TAB: PRIZES ===== -->
+            <div id="tab-prizes" class="tab-content">
+                <section class="hackathon-section" style="padding-top: 0;">
+                    <h2>Prizes and Recognition</h2>
+                    <p class="section-sub">Everyone who meets the criteria wins</p>
+
+                    <div class="hack-card" style="border-color: rgba(255, 215, 0, 0.15); text-align: center; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1.5rem;">No Losers!</h3>
+                        <p style="color: var(--text-secondary); font-size: 1.05rem; margin: 0;">
+                            As long as you meet the eligibility criteria — <strong style="color: var(--text-primary);">no AI, 3+ hours on Hackatime, React-based project</strong> — you walk away with a prize.
+                        </p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                            Submission must be of reasonable quality — spending 3 hours on a single-page site with 3 words and basic design may not be eligible for any prizes.
+                        </p>
+                    </div>
+
+                    <!-- Judging Panel -->
+                    <div style="margin-bottom: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>Judging Panel</h3>
+                            <p>
+                                All submissions will be judged by the co-founders of Bidaya, who'll be
+                                reviewing every project personally. They'll be looking for creativity,
+                                technical execution, and how well your project captures the spirit of the topic.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="prize-grid">
+                        <!-- Shortlisted / Approved -->
+                        <div class="prize-card approved">
+                            <div class="badge-check">Shortlisted</div>
+                            <div class="tier all">🏅</div>
+                            <h4>Shortlisted Participant</h4>
+                            <p class="prize-desc">
+                                Participation Certificate<br>
+                                <strong style="color: var(--text-primary);">$15 virtual card</strong> for domain purchase<br>
+                                Shortlisted Certificate
+                            </p>
+                            <p class="prize-note">For participants who complete 3+ hours of React coding with no AI assistance</p>
+                        </div>
+
+                        <!-- Top Winners -->
+                        <div class="prize-card winner">
+                            <div class="badge-star">Winners</div>
+                            <div class="tier gold">👑</div>
+                            <h4>Winning Participant</h4>
+                            <p class="prize-desc">
+                                Special Backed Certificate<br>
+                                <strong style="color: var(--text-primary);">$15 virtual card</strong> for domain purchase<br>
+                                <strong style="color: var(--text-primary);">Trebuchet Priority</strong> application review
+                            </p>
+                            <p class="prize-note">Awarded to top projects judged on creativity, execution, and design</p>
+                        </div>
+                    </div>
+
+                    <!-- Bonus Shoutouts -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card" style="border-color: rgba(255, 138, 0, 0.15);">
+                            <h3>Exceptional Achievement</h3>
+                            <p>
+                                Sites judged <strong style="color: var(--text-primary);">VERY AMAZING</strong> will receive:
+                            </p>
+                            <ul>
+                                <li>Shoutout on the Bidaya Discord</li>
+                                <li>Optional Instagram shoutout</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Bonus: Trebuchet -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>Bonus: Boost Your Trebuchet Application</h3>
+                            <p>
+                                <strong style="color: var(--text-primary);">Trebuchet</strong> is Bidaya's initiative for students who want to start a research project,
+                                a startup, or build a big project. Selected students get mentorship, and if you don't need mentorship,
+                                we can help connect you with a team instead. In very rare cases, we're even able to help provide financial aid for a project.
+                            </p>
+                            <p>
+                                <strong style="color: var(--text-primary);">Earning a certificate from this hackathon — participation or special — can help strengthen a future Trebuchet application.</strong>
+                                So whatever level you finish at, keep your certificate: it's a real, usable line on your CV.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== TAB: CRITERIA ===== -->
+            <div id="tab-criteria" class="tab-content">
+                <section class="hackathon-section" style="padding-top: 0;">
+                    <h2>Scoring Criteria</h2>
+                    <p class="section-sub">What the judges are looking for</p>
+
+                    <div class="criteria-grid">
+                        <div class="hack-card">
+                            <h3>Creativity</h3>
+                            <p>An original take on the topic — surprise us with your unique angle.</p>
+                        </div>
+                        <div class="hack-card">
+                            <h3>Technical Execution</h3>
+                            <p>Clean, functional code and a site that actually works without major bugs.</p>
+                        </div>
+                        <div class="hack-card">
+                            <h3>Design and UX</h3>
+                            <p>Is it intuitive, polished, and pleasant to use? First impressions matter.</p>
+                        </div>
+                        <div class="hack-card">
+                            <h3>Topic Relevance</h3>
+                            <p>How clearly your project connects to the specific revealed topic.</p>
+                        </div>
+                        <div class="hack-card">
+                            <h3>Completeness</h3>
+                            <p>Did you ship something finished, not just a sketch or prototype?</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick-Start -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>Quick-Start: HTML, CSS and React</h3>
+                            <p style="margin-bottom: 0.8rem;">New to building websites, or just want a refresher? Here's the bare minimum to get you from a blank folder to a live page.</p>
+
+                            <h4 style="color:var(--orange); margin: 1rem 0 0.3rem; font-family: 'Inter', sans-serif;">HTML and CSS in 60 Seconds</h4>
+                            <p style="font-size:0.9rem; color:var(--text-secondary);">HTML gives your page structure — headings, text, images, buttons. CSS controls how it looks — colors, spacing, layout.</p>
+                            <div class="code-block">
+<span class="comment">&lt;!-- index.html --&gt;</span>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;title&gt;</span>My Ocean Site<span class="tag">&lt;/title&gt;</span>
+    <span class="tag">&lt;link</span> <span class="attr">rel=</span><span class="string">"stylesheet"</span> <span class="attr">href=</span><span class="string">"style.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Welcome to the Deep<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;p&gt;</span>Scroll down to explore.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span>
+
+<span class="comment">/* style.css */</span>
+<span class="keyword">body</span> {
+    <span class="attr">background</span>: <span class="string">#04223b</span>;
+    <span class="attr">color</span>: <span class="string">white</span>;
+    <span class="attr">font-family</span>: <span class="string">sans-serif</span>;
+}
+                            </div>
+
+                            <h4 style="color:var(--orange); margin: 1.5rem 0 0.3rem; font-family: 'Inter', sans-serif;">React in a Nutshell</h4>
+                            <p style="font-size:0.9rem; color:var(--text-secondary);">React lets you build a website out of reusable components — little pieces of UI written in JavaScript. A component is just a function that returns some markup:</p>
+                            <div class="code-block">
+<span class="func">function</span> <span class="func">WaveCard</span>() {
+    <span class="keyword">const</span> [<span class="variable">count</span>, <span class="variable">setCount</span>] = <span class="func">useState</span>(<span class="string">0</span>);
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div</span> <span class="attr">className=</span><span class="string">"card"</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;h2&gt;</span>Waves spotted: {<span class="variable">count</span>}<span class="tag">&lt;/h2&gt;</span>
+            <span class="tag">&lt;button</span> <span class="attr">onClick=</span><span class="string">{() =&gt; setCount(count + 1)}</span><span class="tag">&gt;</span>
+                Spot a wave
+            <span class="tag">&lt;/button&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    );
+}
+                            </div>
+                            <ul style="margin-top:0.8rem;">
+                                <li><strong style="color:var(--text-primary);">Components:</strong> Break your page into small, reusable pieces.</li>
+                                <li><strong style="color:var(--text-primary);">State:</strong> useState lets a component remember and update data.</li>
+                                <li><strong style="color:var(--text-primary);">JSX:</strong> Curly braces let you drop JavaScript values into your markup.</li>
+                            </ul>
+
+                            <div style="margin-top: 1rem; display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                                <a href="https://react.dev/learn" target="_blank" class="btn-outline">React Official Guide →</a>
+                                <a href="https://www.w3schools.com/" target="_blank" class="btn-outline">W3Schools</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tips -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="hack-card">
+                            <h3>Tips for a Great Hackathon</h3>
+                            <ul>
+                                <li><strong style="color: var(--text-primary);">Plan before you build:</strong> Spend the first 30-60 minutes sketching your idea and scope before writing any code. A clear plan saves hours later.</li>
+                                <li><strong style="color: var(--text-primary);">Ship something small first:</strong> A simple project that works beats an ambitious one that's half broken. Get a working version early, then improve it.</li>
+                                <li><strong style="color: var(--text-primary);">Polish matters:</strong> Judges only see what you submit — polish your landing page, add a favicon, write a clean README.</li>
+                                <li><strong style="color: var(--text-primary);">Take breaks:</strong> Hackathons move fast. Step away, stretch, and eat something before you crash.</li>
+                                <li><strong style="color: var(--text-primary);">Ask for help:</strong> If mentors or check-ins are available, use them. A five-minute chat can save you an hour of debugging.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== TAB: FAQ ===== -->
+            <div id="tab-faq" class="tab-content">
+                <section class="hackathon-section" style="padding-top: 0;">
+                    <h2>Frequently Asked Questions</h2>
+                    <p class="section-sub">Quick answers to common questions</p>
+
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="question">
+                            <span>Can I start building before the specific topic is revealed?</span>
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="answer">You can sharpen your skills, set up your tools, and get comfortable with HTML/CSS or React. But since topic relevance matters significantly in judging, we'd recommend holding off on your actual project idea until the specific topic drops — building toward the wrong angle can cost you points.</div>
+                    </div>
+
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="question">
+                            <span>What if my site breaks right before the deadline?</span>
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="answer">Submit what you have — a working, partially-featured site will always score better than no submission at all. Just remember the deadline itself won't move.</div>
+                    </div>
+
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="question">
+                            <span>Can I use AI tools to help me code?</span>
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="answer">You can, but it will make you ineligible for a prize. If you want to be eligible, your code and design need to be your own, unassisted by AI. This is strictly enforced with zero tolerance — any confirmed AI use results in a permanent ban from all future Bidaya events.</div>
+                    </div>
+
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="question">
+                            <span>What is Hackatime, and do I really need it?</span>
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="answer">Hackatime is a free tool that tracks your coding time automatically. Yes, it's required if you want your 3+ hours of work verified for prize eligibility — see the install steps on the Overview tab.</div>
+                    </div>
+
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="question">
+                            <span>How will I know if I won?</span>
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="answer">Winners will be announced after judging closes, through the channels used to communicate throughout the event. Shortlisted participants and winners will receive emails as well.</div>
+                    </div>
+                </section>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ===== STAY IN THE LOOP ===== -->
+            <section class="hackathon-section" style="padding-top: 0;">
+                <div class="hack-card" style="border-color: rgba(255, 138, 0, 0.1);">
+                    <h3 style="text-align: center; font-size: 1.3rem;">Stay in the Loop</h3>
+                    <p style="text-align: center;">
+                        This won't be the last thing Bidaya runs. Join the Discord and follow on Instagram
+                        to hear about future hackathons, workshops, debates, and more — plus, Discord members
+                        get early access to topic reveals for events like this one.
+                    </p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-top: 1rem;">
+                        <div style="text-align: center;">
+                            <strong style="color: var(--text-primary);">Bidaya Discord</strong>
+                            <p style="font-size: 0.9rem; margin: 0.2rem 0; color: var(--text-secondary);">Join for community, early topic access, and event announcements.</p>
+                            <a href="https://discord.gg/VzKjyhTWy4" target="_blank" class="btn-outline" style="margin-top: 0.5rem;">Join Discord →</a>
+                        </div>
+                        <div style="text-align: center;">
+                            <strong style="color: var(--text-primary);">Bidaya Instagram</strong>
+                            <p style="font-size: 0.9rem; margin: 0.2rem 0; color: var(--text-secondary);">Follow for updates on upcoming hackathons, workshops, and debates.</p>
+                            <a href="https://instagram.com/bidaya.dev" target="_blank" class="btn-outline" style="margin-top: 0.5rem;">Follow →</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== CLOSING ===== -->
+            <section class="hackathon-section" style="padding-top: 0;">
+                <div class="hack-card" style="text-align: center; border-color: rgba(255, 138, 0, 0.08);">
+                    <h3 style="font-size: 1.6rem; color: var(--text-primary); font-family: 'Inter', sans-serif;">Good luck, and happy building!</h3>
+                    <p style="color: var(--text-secondary);">
+                        Remember — no losers here, just builders. Questions before the event? Reach out to the organizing team.
+                    </p>
+                    <div style="margin-top: 1.2rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+                        <a href="https://underthesurface.vercel.app" target="_blank" class="btn-hackathon" style="padding: 0.8rem 2rem; font-size: 0.95rem;">
+                            Example Site →
+                        </a>
+                        <a href="https://discord.gg/VzKjyhTWy4" target="_blank" class="btn-outline">Join Discord</a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ===== NOTIFICATION POPUP ===== -->
+    <div id="hackatime-notification" class="notification-popup">
+        <button class="notif-close" onclick="dismissNotification()" aria-label="Close notification">✕</button>
+        <div class="notif-header">
+            <span class="icon">⏱️</span>
+            <span class="title">Don't forget Hackatime!</span>
+        </div>
+        <div class="notif-body">
+            Set up <strong>Hackatime</strong> before you start building to track your 3+ hours for prize eligibility.
+        </div>
+        <div class="notif-actions">
+            <a href="#hackatime-section" class="btn-notif" onclick="dismissNotification()">View Guide →</a>
+            <button class="btn-dismiss" onclick="dismissNotification()">Dismiss</button>
+        </div>
+    </div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo">
+                    <img src="images/bidaya-english-logo.png" alt="Bidaya Initiative" class="footer-logo" />
+                </div>
+                <p>Empowering young innovators around the globe through collaboration, learning, and real-world impact.</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Events</h4>
+                    <a href="hackathon.html">Hackathon</a>
+                    <a href="hackathon.html">Workshops</a>
+                </div>
+                <div class="link-group">
+                    <h4>Resources</h4>
+                    <a href="documentation.html">Documentation</a>
+                    <a href="hackathon.html">Hackathon</a>
+                    <a href="https://discord.gg/VzKjyhTWy4" target="_blank" rel="noopener noreferrer">Discord</a>
+                    <a href="javascript:void(0)" onclick="showJoinDiscordPopup('Mentorship')">Mentorship</a>
+                </div>
+                <div class="link-group">
+                    <h4>About</h4>
+                    <a href="index.html#about">Mission</a>
+                    <a href="index.html#contact">Contact</a>
+                    <a href="https://panel.bidaya.dev" style="color: #667eea; font-weight: 600;" target="_blank">Admin Panel</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Bidaya Initiative. Made with ❤️ by students, for students.</p>
+        </div>
+    </div>
+</footer>
+
+    <script src="script.js"></script>
+    <script>
+        // ===== NOTIFICATION POPUP =====
+        function dismissNotification() {
+            var notif = document.getElementById('hackatime-notification');
+            if (notif) {
+                notif.classList.add('hidden');
+            }
+        }
+
+        // Auto-dismiss after 10 seconds
+        setTimeout(function() {
+            var notif = document.getElementById('hackatime-notification');
+            if (notif && !notif.classList.contains('hidden')) {
+                notif.classList.add('hidden');
+            }
+        }, 10000);
+
+        // ===== TABS =====
+        document.querySelectorAll('.tab-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(function(c) {
+                    c.classList.remove('active');
+                });
+                btn.classList.add('active');
+                var tabId = 'tab-' + btn.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // ===== FAQ toggle =====
+        function toggleFaq(element) {
+            element.classList.toggle('open');
+        }
+
+        // ===== Popup functions =====
+        function showComingSoon(featureName) {
+            var popup = document.createElement('div');
+            popup.className = 'coming-soon-popup';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <div class="popup-icon">🚀</div>
+                    <h3>Coming Soon!</h3>
+                    <p><strong>${featureName}</strong> is currently under development.</p>
+                    <p>We're working hard to bring you this exciting feature. Stay tuned!</p>
+                    <button onclick="closeComingSoon()" class="popup-btn">Got it!</button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+            setTimeout(function() { popup.classList.add('show'); }, 10);
+        }
+
+        function closeComingSoon() {
+            var popup = document.querySelector('.coming-soon-popup');
+            if (popup) {
+                popup.classList.remove('show');
+                setTimeout(function() { popup.remove(); }, 300);
+            }
+        }
+
+        function showJoinDiscordPopup(topic) {
+            var popup = document.createElement('div');
+            popup.className = 'coming-soon-popup';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <div class="popup-icon">💬</div>
+                    <h3>Join our Discord</h3>
+                    <p>To access <strong>${topic}</strong>, please join our Discord community.</p>
+                    <p>Click the button below to open the Discord invite.</p>
+                    <button onclick="window.open('https://discord.gg/VzKjyhTWy4','_blank')" class="popup-btn">Join Discord</button>
+                    <button onclick="closeJoinDiscordPopup()" class="popup-btn" style="background:transparent;border:1px solid var(--border-glass);margin-left:8px;">Close</button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+            setTimeout(function() { popup.classList.add('show'); }, 10);
+        }
+
+        function closeJoinDiscordPopup() {
+            var popup = document.querySelector('.coming-soon-popup');
+            if (popup) {
+                popup.classList.remove('show');
+                setTimeout(function() { popup.remove(); }, 300);
+            }
+        }
+
+        function toggleMobileMenu() {
+            var navLinks = document.querySelector('.nav-links');
+            var toggle = document.querySelector('.mobile-menu-toggle');
+            if (navLinks) {
+                navLinks.classList.toggle('mobile-menu-open');
+            }
+            if (toggle) {
+                toggle.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                var navLinks = document.querySelector('.nav-links');
+                var toggle = document.querySelector('.mobile-menu-toggle');
+                if (navLinks) {
+                    navLinks.classList.remove('mobile-menu-open');
+                }
+                if (toggle) {
+                    toggle.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

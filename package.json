@@ -1,0 +1,36 @@
+{
+  "name": "project-bidaya",
+  "version": "2.0.0",
+  "description": "Project Bidaya - Student Innovation Platform with Team Management and Admin Panel",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "vercel dev",
+    "build": "echo 'No build step required'",
+    "deploy": "vercel --prod",
+    "local": "python -m http.server 8000",
+    "test": "node test-api.html"
+  },
+  "keywords": [
+    "student-innovation",
+    "team-management",
+    "mongodb",
+    "vercel",
+    "admin-panel"
+  ],
+  "author": "Project Bidaya Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongodb": "^6.20.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/x0as/project-bidaya-private.git"
+  }
+}

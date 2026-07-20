@@ -1,0 +1,3 @@
+0000000000000000000000000000000000000000 73f5833c81da3fb3a9f2acdfa264887283620f79 x0as <muhammadhuzaifakhalidaziz@outlook.com> 1773775956 +0400	clone: from https://github.com/x0as/bidaya-project
+73f5833c81da3fb3a9f2acdfa264887283620f79 d582496f0c8a2f1522260cf8e89d83e84e9f0551 x0as <muhammadhuzaifakhalidaziz@outlook.com> 1775507138 +0400	commit: Replace Slack with Discord, remove team page and admin panel links
+d582496f0c8a2f1522260cf8e89d83e84e9f0551 d4fc075bb27de51dabe1386befb416c879aa3cb2 x0as <muhammadhuzaifakhalidaziz@outlook.com> 1775507156 +0400	commit: Remove admin.html and team.html pages

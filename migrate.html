@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database Migration</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px 0; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>🛠️ Database Migration Tool</h1>
+    <p>This will reinitialize the MongoDB database with actual team data from data.json</p>
+    
+    <button onclick="migrateData()">🚀 Migrate Team Data to MongoDB</button>
+    <button onclick="checkCurrentData()">📊 Check Current Database</button>
+    
+    <div id="result"></div>
+
+    <script>
+        async function migrateData() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="info">⏳ Migrating data...</div>';
+            
+            try {
+                const response = await fetch('/api/reinit-database', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h3>✅ Migration Successful!</h3>
+                            <p><strong>Message:</strong> ${result.message}</p>
+                            <p><strong>Team Members:</strong> ${result.teamMembersCount}</p>
+                            <p><strong>Contact Submissions:</strong> ${result.contactSubmissionsCount}</p>
+                            <p><strong>Users:</strong> ${result.userCount}</p>
+                            <p><strong>Stats:</strong> ${JSON.stringify(result.stats, null, 2)}</p>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h3>❌ Migration Failed</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function checkCurrentData() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="info">⏳ Checking database...</div>';
+            
+            try {
+                const response = await fetch('/api/get-data');
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="info">
+                        <h3>📊 Current Database Content</h3>
+                        <p><strong>Team Members:</strong> ${data.teamMembers ? data.teamMembers.length : 0}</p>
+                        <p><strong>Contact Submissions:</strong> ${data.contactSubmissions ? data.contactSubmissions.length : 0}</p>
+                        <p><strong>Stats:</strong> ${JSON.stringify(data.stats, null, 2)}</p>
+                        <details>
+                            <summary>Full Data</summary>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </details>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h3>❌ Check Failed</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

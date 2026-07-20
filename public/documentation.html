@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Bidaya</title>
+    <link rel="icon" type="image/png" href="images/bidaya-b-logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Documentation specific styles */
+        .doc-page {
+            background: var(--bg-dark);
+            min-height: 100vh;
+        }
+
+        .doc-hero {
+            padding: 120px 0 40px;
+            text-align: center;
+        }
+        .doc-hero h1 {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(2.5rem, 5vw, 3.8rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+        .doc-hero .subtitle {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            max-width: 640px;
+            margin: 0 auto;
+            font-weight: 400;
+            line-height: 1.7;
+            letter-spacing: 0.01em;
+        }
+
+        /* Grid wrapper for centering */
+        .doc-grid-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 2rem 0 5rem;
+            width: 100%;
+        }
+
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            width: 100%;
+            padding: 0 2rem;
+            margin: 0;
+        }
+
+        .doc-grid .doc-card {
+            grid-column: span 1;
+            width: 100%;
+        }
+
+        /* Founder block spans 2 columns */
+        .founder-block {
+            grid-column: span 2;
+            width: 100%;
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 2rem 2.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 280px;
+        }
+
+        .founder-block:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 138, 0, 0.35);
+            box-shadow: var(--shadow);
+        }
+
+        .founder-block .founder-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .founder-block h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .founder-block .founder-sub {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            font-weight: 400;
+        }
+
+        .founder-block .founder-names {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.5rem;
+            margin-top: 0.3rem;
+        }
+
+        .founder-block .founder-names .name {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+        }
+
+        .founder-block .founder-names .name .title {
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .founder-block .founder-names .name .highlight {
+            color: var(--orange);
+        }
+
+        .doc-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 2rem 2rem 2.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            min-height: 280px;
+        }
+        .doc-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 138, 0, 0.35);
+            box-shadow: var(--shadow);
+        }
+
+        .doc-card .doc-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--orange);
+            margin-bottom: 0.75rem;
+        }
+
+        .doc-card h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+        .doc-card p {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            flex: 1;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+        }
+
+        .doc-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.6rem;
+            border-radius: 30px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            box-shadow: var(--shadow-glow);
+            letter-spacing: 0.01em;
+        }
+        .doc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 138, 0, 0.4);
+        }
+        .doc-btn .arrow {
+            transition: transform 0.2s ease;
+        }
+        .doc-btn:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+        .back-link .arrow {
+            transition: transform 0.2s ease;
+        }
+        .back-link:hover .arrow {
+            transform: translateX(-4px);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .doc-grid {
+                max-width: 900px;
+                gap: 1.5rem;
+                padding: 0 1.5rem;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .doc-grid {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 700px;
+                gap: 1.5rem;
+                padding: 0 1.5rem;
+            }
+            .doc-grid .doc-card {
+                grid-column: span 1;
+                width: 100%;
+            }
+            .founder-block {
+                grid-column: span 2;
+                width: 100%;
+                min-height: 200px;
+            }
+            .doc-card {
+                min-height: 240px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .doc-hero { padding: 100px 0 20px; }
+            .doc-grid { 
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                padding: 0 1rem;
+                gap: 1.5rem;
+            }
+            .doc-grid .doc-card {
+                grid-column: span 1;
+                width: 100%;
+            }
+            .founder-block {
+                grid-column: span 1;
+                width: 100%;
+                padding: 1.5rem;
+                min-height: auto;
+            }
+            .doc-card {
+                text-align: left;
+                padding: 1.5rem;
+                min-height: auto;
+            }
+            .founder-block .founder-names {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            .doc-grid-wrapper {
+                padding: 1rem 0 3rem;
+            }
+        }
+        @media (max-width: 400px) {
+            .doc-card h3 {
+                font-size: 1.1rem;
+            }
+            .founder-block h3 {
+                font-size: 1.1rem;
+            }
+            .doc-grid {
+                padding: 0 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body class="doc-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="images/bidaya-b-logo.png" alt="Bidaya" class="navbar-logo" />
+                <span>Bidaya</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="documentation.html" class="active">Documentation</a></li>
+                <li><a href="hackathon.html">Hackathon</a></li>
+                <li><a href="index.html#community">Community</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button class="join-btn">Join Us</button>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="doc-hero">
+                <a href="index.html" class="back-link">
+                    <span class="arrow">←</span> Back to Home
+                </a>
+                <h1>Documentation</h1>
+                <p class="subtitle">Official documents, fiscal sponsorship details, and nonprofit filings for Bidaya and The Hack Foundation.</p>
+            </div>
+
+            <div class="doc-grid-wrapper">
+                <div class="doc-grid">
+                    <!-- Founder Block (spans 2 columns) - NOW FIRST -->
+                    <div class="founder-block">
+                        <span class="founder-label">Leadership</span>
+                        <h3>Founders &amp; Co-Founders</h3>
+                        <p class="founder-sub">The visionaries behind Bidaya, building the future of student innovation.</p>
+                        <div class="founder-names">
+                            <span class="name">
+                                Muhammad Huzaifa Khalid
+                                <span class="title">· Founder &amp; CEO</span>
+                            </span>
+                            <span class="name">
+                                Atharv Dhiman
+                                <span class="title">· Co-Founder</span>
+                            </span>
+                            <span class="name">
+                                Sameer Salman
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card 1 -->
+                    <div class="doc-card">
+                        <span class="doc-label">Tax Document</span>
+                        <h3>2026 Hack Club W9</h3>
+                        <p>W-9 form for The Hack Foundation, including tax classification and certification information.</p>
+                        <a href="public/docs/2026%20Hack%20Club%20W9.pdf" class="doc-btn" target="_blank">
+                            View PDF <span class="arrow">→</span>
+                        </a>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="doc-card">
+                        <span class="doc-label">Certificate</span>
+                        <h3>Certificate of Non-Profit Status</h3>
+                        <p>California Secretary of State certification for The Hack Foundation as a public benefit nonprofit corporation.</p>
+                        <a href="public/docs/Certificate%20of%20Non-Profit%20Status.pdf" class="doc-btn" target="_blank">
+                            View PDF <span class="arrow">→</span>
+                        </a>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="doc-card">
+                        <span class="doc-label">Sponsorship</span>
+                        <h3>Fiscal Sponsorship Letter</h3>
+                        <p>Confirmation that The Hack Foundation serves as fiscal sponsor for Bidaya since March 2026.</p>
+                        <a href="public/docs/fiscal_sponsorship_letter.pdf" class="doc-btn" target="_blank">
+                            View PDF <span class="arrow">→</span>
+                        </a>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="doc-card">
+                        <span class="doc-label">Financial Filing</span>
+                        <h3>Hack Club FY24 990</h3>
+                        <p>Form 990 return for The Hack Foundation, including program service accomplishments and financial statements.</p>
+                        <a href="public/docs/Hack%20Club%20FY24%20990%20-%20Public.pdf" class="doc-btn" target="_blank">
+                            View PDF <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo">
+                    <img src="images/bidaya-english-logo.png" alt="Bidaya Initiative" class="footer-logo" />
+                </div>
+                <p>Empowering young innovators around the globe through collaboration, learning, and real-world impact.</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Events</h4>
+                    <a href="hackathon.html">Hackathon</a>
+                    <a href="hackathon.html">Workshops</a>
+                </div>
+                <div class="link-group">
+                    <h4>Resources</h4>
+                    <a href="documentation.html">Documentation</a>
+                    <a href="hackathon.html">Hackathon</a>
+                    <a href="https://discord.gg/VzKjyhTWy4" target="_blank" rel="noopener noreferrer">Discord</a>
+                    <a href="javascript:void(0)" onclick="showJoinDiscordPopup('Mentorship')">Mentorship</a>
+                </div>
+                <div class="link-group">
+                    <h4>About</h4>
+                    <a href="index.html#about">Mission</a>
+                    <a href="index.html#contact">Contact</a>
+                    <a href="https://panel.bidaya.dev" style="color: #667eea; font-weight: 600;" target="_blank">Admin Panel</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Bidaya Initiative. Made with ❤️ by students, for students.</p>
+        </div>
+    </div>
+</footer>
+
+    <script src="script.js"></script>
+    <script>
+        function showComingSoon(featureName) {
+            var popup = document.createElement('div');
+            popup.className = 'coming-soon-popup';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <div class="popup-icon">🚀</div>
+                    <h3>Coming Soon!</h3>
+                    <p><strong>${featureName}</strong> is currently under development.</p>
+                    <p>We're working hard to bring you this exciting feature. Stay tuned!</p>
+                    <button onclick="closeComingSoon()" class="popup-btn">Got it!</button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+            setTimeout(function() { popup.classList.add('show'); }, 10);
+        }
+
+        function closeComingSoon() {
+            var popup = document.querySelector('.coming-soon-popup');
+            if (popup) {
+                popup.classList.remove('show');
+                setTimeout(function() { popup.remove(); }, 300);
+            }
+        }
+
+        function showJoinDiscordPopup(topic) {
+            var popup = document.createElement('div');
+            popup.className = 'coming-soon-popup';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <div class="popup-icon">💬</div>
+                    <h3>Join our Discord</h3>
+                    <p>To access <strong>${topic}</strong>, please join our Discord community.</p>
+                    <p>Click the button below to open the Discord invite.</p>
+                    <button onclick="window.open('https://discord.gg/VzKjyhTWy4','_blank')" class="popup-btn">Join Discord</button>
+                    <button onclick="closeJoinDiscordPopup()" class="popup-btn" style="background:transparent;border:1px solid var(--border-glass);margin-left:8px;">Close</button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+            setTimeout(function() { popup.classList.add('show'); }, 10);
+        }
+
+        function closeJoinDiscordPopup() {
+            var popup = document.querySelector('.coming-soon-popup');
+            if (popup) {
+                popup.classList.remove('show');
+                setTimeout(function() { popup.remove(); }, 300);
+            }
+        }
+
+        function toggleMobileMenu() {
+            var navLinks = document.querySelector('.nav-links');
+            var toggle = document.querySelector('.mobile-menu-toggle');
+            if (navLinks) {
+                navLinks.classList.toggle('mobile-menu-open');
+            }
+            if (toggle) {
+                toggle.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                var navLinks = document.querySelector('.nav-links');
+                var toggle = document.querySelector('.mobile-menu-toggle');
+                if (navLinks) {
+                    navLinks.classList.remove('mobile-menu-open');
+                }
+                if (toggle) {
+                    toggle.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
