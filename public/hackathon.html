@@ -3,19 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Under The Surface · Hackathon 2026</title>
-    <link rel="icon" type="image/png" href="images/bidaya-b-logo.png">
+    <title>The Arctic · Bidaya Hackathon 2026</title>
+    <link rel="icon" type="image/png" href="https://bidaya.dev/images/bidaya-b-logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://bidaya.dev/styles.css">
     <style>
         /* ===== Hackathon-specific styles ===== */
         .hackathon-page {
+            --bg-dark: #061a2a;
+            --bg-card: rgba(11, 33, 48, 0.78);
+            --bg-darker: #04131d;
+            --text-primary: #edfaff;
+            --text-secondary: #c2e3f4;
+            --text-muted: #8ebad0;
+            --border-glass: rgba(168, 226, 255, 0.22);
+            --orange: #9be7ff;
+            --gradient: linear-gradient(135deg, #dff9ff 0%, #a6deff 22%, #82bfff 52%, #dffef8 100%);
+            --shadow: 0 18px 55px rgba(3, 18, 28, 0.38);
+            --shadow-glow: 0 12px 38px rgba(146, 214, 255, 0.28);
             background: var(--bg-dark);
             background-image:
-                radial-gradient(ellipse at 20% 80%, rgba(255, 138, 0, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(128, 0, 255, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(255, 0, 128, 0.04) 0%, transparent 70%);
+                radial-gradient(ellipse at 20% 10%, rgba(175, 235, 255, 0.18) 0%, transparent 38%),
+                radial-gradient(ellipse at 70% 20%, rgba(146, 214, 255, 0.14) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 100%, rgba(121, 176, 255, 0.09) 0%, transparent 40%),
+                linear-gradient(180deg, #0a2232 0%, #061a2a 48%, #071e2d 100%);
             min-height: 100vh;
+        }
+
+        .hackathon-page .navbar,
+        .hackathon-page .footer {
+            background: rgba(5, 18, 29, 0.9);
+        }
+
+        .hackathon-page .hack-card,
+        .hackathon-page .prize-card,
+        .hackathon-page .faq-item,
+        .hackathon-page .notification-popup,
+        .hackathon-page .date-block,
+        .hackathon-page .tab-btn {
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.16);
         }
 
         /* ===== Notification Popup ===== */
@@ -25,12 +51,12 @@
             right: 30px;
             max-width: 380px;
             width: 100%;
-            background: var(--bg-card);
+            background: rgba(10, 30, 42, 0.88);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 138, 0, 0.2);
+            border: 1px solid rgba(147, 214, 255, 0.28);
             border-radius: 16px;
             padding: 1.2rem 1.5rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
             z-index: 9999;
             transform: translateY(0);
             opacity: 1;
@@ -144,9 +170,9 @@
 
         .hackathon-hero .depth-badge {
             display: inline-block;
-            background: rgba(255, 138, 0, 0.15);
-            border: 1px solid rgba(255, 138, 0, 0.2);
-            color: var(--orange);
+            background: rgba(159, 227, 255, 0.12);
+            border: 1px solid rgba(159, 227, 255, 0.2);
+            color: #dff9ff;
             padding: 0.5rem 1.8rem;
             border-radius: 30px;
             font-size: 0.8rem;
@@ -161,8 +187,8 @@
 
         .hackathon-hero .depth-badge .new-tag {
             display: inline-block;
-            background: #ff6b35;
-            color: #fff;
+            background: linear-gradient(135deg, #dfefff, #79d1ff);
+            color: #06283d;
             font-size: 0.55rem;
             font-weight: 800;
             padding: 0.15rem 0.6rem;
@@ -227,8 +253,8 @@
 
         /* ===== Buttons ===== */
         .btn-hackathon {
-            background: var(--gradient);
-            color: white;
+            background: linear-gradient(135deg, #dff9ff 0%, #a3deff 18%, #7eb7ff 100%);
+            color: #06283d;
             border: none;
             padding: 0.8rem 2rem;
             border-radius: 12px;
@@ -238,7 +264,7 @@
             text-decoration: none;
             display: inline-block;
             transition: all 0.3s ease;
-            box-shadow: var(--shadow-glow);
+            box-shadow: 0 12px 32px rgba(130, 204, 255, 0.35);
             position: relative;
             z-index: 1;
             font-family: 'Inter', sans-serif;
@@ -246,7 +272,7 @@
 
         .btn-hackathon:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 50px rgba(255, 138, 0, 0.4);
+            box-shadow: 0 15px 50px rgba(130, 204, 255, 0.32);
         }
 
         .btn-hackathon .arrow {
@@ -261,8 +287,8 @@
         .btn-outline {
             display: inline-block;
             background: transparent;
-            color: var(--orange);
-            border: 1px solid rgba(255, 138, 0, 0.3);
+            color: #dff9ff;
+            border: 1px solid rgba(159, 227, 255, 0.35);
             padding: 0.6rem 1.8rem;
             border-radius: 12px;
             font-weight: 600;
@@ -274,8 +300,8 @@
         }
 
         .btn-outline:hover {
-            background: rgba(255, 138, 0, 0.1);
-            border-color: var(--orange);
+            background: rgba(159, 227, 255, 0.08);
+            border-color: #dff9ff;
             transform: translateY(-2px);
         }
 
@@ -325,8 +351,8 @@
         .bubble {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 138, 0, 0.08), rgba(255, 0, 128, 0.03));
-            border: 1px solid rgba(255, 138, 0, 0.05);
+            background: radial-gradient(circle at 30% 30%, rgba(196, 238, 255, 0.18), rgba(146, 214, 255, 0.04));
+            border: 1px solid rgba(171, 232, 255, 0.12);
             animation: rise var(--duration, 12s) ease-in-out infinite;
         }
 
@@ -560,7 +586,7 @@
         }
 
         .prize-card .tier.gold { 
-            background: linear-gradient(135deg, #ffd700, #ffb800);
+            background: linear-gradient(135deg, #e9fbff, #8ecbff, #9ae7ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -642,15 +668,15 @@
         /* ===== Highlight styles ===== */
         .highlight-warning {
             padding: 1rem;
-            background: rgba(255, 138, 0, 0.06);
+            background: rgba(141, 218, 255, 0.06);
             border-radius: 12px;
-            border-left: 3px solid var(--orange);
+            border-left: 3px solid #9be7ff;
             margin: 0.8rem 0;
         }
 
         .highlight-warning .icon {
             font-weight: 700;
-            color: var(--orange);
+            color: #9be7ff;
         }
 
         .highlight-warning p {
@@ -854,18 +880,18 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="images/bidaya-b-logo.png" alt="Bidaya" class="navbar-logo" />
+                <img src="https://bidaya.dev/images/bidaya-b-logo.png" alt="Bidaya" class="navbar-logo" />
                 <span>Bidaya</span>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="documentation.html">Documentation</a></li>
-                <li><a href="hackathon.html" class="active">Hackathon</a></li>
-                <li><a href="index.html#community">Community</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="https://bidaya.dev">Home</a></li>
+                <li><a href="https://bidaya.dev#about">About</a></li>
+                <li><a href="https://bidaya.dev/documentation.html">Documentation</a></li>
+                <li><a href="https://bidaya.dev/hackathon.html" class="active">Hackathon</a></li>
+                <li><a href="https://bidaya.dev#community">Community</a></li>
+                <li><a href="https://bidaya.dev#contact">Contact</a></li>
             </ul>
-            <a href="index.html#contact" class="join-btn">Join Us</a>
+            <a href="https://bidaya.dev#contact" class="join-btn">Join Us</a>
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                 <span></span>
                 <span></span>
@@ -891,23 +917,22 @@
                 </div>
 
                 <div class="depth-badge">
-                    TOPIC RELEASED, CAN BE FOUND IN FAQ
-                    <span class="new-tag">New</span>
+                    BIDAYA HACKATHON · DECEMBER 2026
                 </div>
 
-                <h1>Under The Surface</h1>
-                <p class="subtitle">A Solo-Builder Web REACT UI Hackathon</p>
+                <h1>The Arctic</h1>
+                <p class="subtitle">A solo-builder web hackathon for curious, capable makers</p>
 
                 <div class="date-block">
-                    <strong>27-30 July 2026</strong> · Open to all skill levels
+                    <strong>6 December 2026</strong> · High school students and younger
                 </div>
 
                 <div class="hero-buttons">
-                    <a href="https://tally.so/r/7RzYEP" target="_blank" class="btn-hackathon">
-                        Submit <span class="arrow">→</span>
+                    <a href="#tab-overview" class="btn-hackathon">
+                        Read the guide <span class="arrow">→</span>
                     </a>
-                    <a href="https://underthesurface.vercel.app" target="_blank" class="btn-secondary-outline">
-                        Example Site ↗
+                    <a href="The%20Arctic%20Hackathon.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary-outline">
+                        Download the guide ↗
                     </a>
                 </div>
             </section>
@@ -927,7 +952,7 @@
                     <div class="hack-card">
                         <h3>Welcome, young builder.</h3>
                         <p>
-                            We are glad to see you considering joining Bidaya's first ever hackathon!
+                            We are glad to see you considering joining Bidaya's Arctic Hackathon!
                             This guide has everything you need to know before, during, and even after
                             the hackathon: how it works, how you're judged, and how to make the most
                             of your time. Read carefully, then build relentlessly. <strong style="color: var(--text-primary);">Best of luck!</strong>
@@ -988,11 +1013,9 @@
                                     use will result in immediate disqualification from prizes.
                                 </li>
                                 <li>
-                                    <strong style="color: var(--text-primary);">Theme:</strong> The broad theme is the Ocean.
-                                    The specific topic within that theme will be revealed later, closer to the hackathon,
-                                    and will be posted on our website (<a href="https://bidaya.dev" style="color: var(--orange); text-decoration: none; font-weight: 600;">bidaya.dev</a>)
-                                    as well as shared with the Bidaya Discord. Do not start building too much too early,
-                                    as resonance with the specific topic is crucial, regardless of the broader theme.
+                                    <strong style="color: var(--text-primary);">Theme:</strong> The topic is broad this time.
+                                    You may build anything appropriate that meets the event requirements and connects to the theme,
+                                    even if it is not specifically about the Arctic.
                                 </li>
                                 <li>
                                     <strong style="color: var(--text-primary);">Deliverable:</strong> Your final submission must be a website.
@@ -1001,25 +1024,9 @@
                                 </li>
                                 <li>
                                     <strong style="color: var(--text-primary);">Tools:</strong> You're welcome to use any language, framework, or library.
-                                    Note that AI coding tools are not allowed. Usage of such tools will affect prize eligibility.
-                                    <strong style="color: var(--text-primary);">To be eligible for a prize, your website must be built using React.</strong>
+                                    AI coding tools are not allowed. To be eligible for a prize, your website must use React JS.
                                 </li>
                             </ul>
-                        </div>
-                    </div>
-
-                    <!-- Get the Topic Early -->
-                    <div style="margin-top: 1.5rem;">
-                        <div class="hack-card" style="border-color: rgba(255, 138, 0, 0.15);">
-                            <h3>Get the Topic Early</h3>
-                            <p>
-                                The specific topic (within the ocean theme) will be shared early with
-                                members of the Bidaya Discord server before it's announced anywhere else.
-                                It will also be posted on our website (<a href="https://bidaya.dev" style="color: var(--orange); text-decoration: none; font-weight: 600;">bidaya.dev</a>)
-                                at the official reveal time. We'd again recommend waiting for the specific topic
-                                rather than starting on the broad theme alone — relevance to the exact topic
-                                matters a lot in judging, and building toward the wrong angle can cost you points later.
-                            </p>
                         </div>
                     </div>
 
@@ -1030,11 +1037,11 @@
                             <div class="timeline-grid">
                                 <div class="timeline-item">
                                     <span class="label">Registration closes</span>
-                                    <span class="value"><strong>27 July</strong> 11:59 PM GMT+4</span>
+                                    <span class="value"><strong>30 January</strong> 11:59 PM IST</span>
                                 </div>
                                 <div class="timeline-item">
-                                    <span class="label">Topic Reveal</span>
-                                    <span class="value"><strong>27 July</strong> 10:00 AM GMT+4</span>
+                                    <span class="label">Topic</span>
+                                    <span class="value">No specific topic</span>
                                 </div>
                                 <div class="timeline-item">
                                     <span class="label">Optional Crash Course</span>
@@ -1042,15 +1049,15 @@
                                 </div>
                                 <div class="timeline-item">
                                     <span class="label">Submissions Deadline</span>
-                                    <span class="value"><strong>30 July</strong> 10:00 AM GMT+4</span>
+                                    <span class="value"><strong>30 January</strong> 11:59 PM IST</span>
                                 </div>
                                 <div class="timeline-item">
                                     <span class="label">Shortlisted Participants Announced</span>
-                                    <span class="value">TBD</span>
+                                    <span class="value">1-2 weeks after deadline</span>
                                 </div>
                                 <div class="timeline-item">
                                     <span class="label">Winners Announced</span>
-                                    <span class="value">TBD</span>
+                                    <span class="value">1-2 weeks after deadline</span>
                                 </div>
                             </div>
                         </div>
@@ -1062,7 +1069,7 @@
                             <h3>Rules and Eligibility</h3>
                             <ul>
                                 <li>Work must be entirely your own, done individually and during the official hackathon window. Any aspect copied or adapted from somebody else must be clearly labelled.</li>
-                                <li>Submissions must clearly connect to the topic — judges will factor this into scoring.</li>
+                                <li>Submissions must clearly connect to the theme — judges will factor this into scoring.</li>
                                 <li>You must submit a working link to your site, your source code repository on GitHub, and an optional 60-second video explaining your project before the deadline.</li>
                                 <li>The submission deadline is strict. No extensions, no exceptions; plan your last few hours accordingly.</li>
                                 <li>Plagiarism, copying another participant's project, or misrepresenting authorship results in disqualification.</li>
@@ -1072,18 +1079,21 @@
                         </div>
                     </div>
 
-                    <!-- To Be Eligible for a Prize -->
+                    <!-- Prize Eligibility Requirements -->
                     <div style="margin-top: 1.5rem;">
                         <div class="hack-card" style="border-color: rgba(255, 138, 0, 0.15);">
-                            <h3 style="color: var(--orange);">To Be Eligible for a Prize</h3>
+                            <h3 style="color: var(--orange);">Prize Eligibility Requirements</h3>
 
-                            <div class="highlight-danger">
-                                <p><span class="icon">⚠</span> <strong>No AI use. Zero tolerance.</strong></p>
-                                <p style="margin-top: 0.5rem;">Your code and design must be written entirely by you, by hand, with <strong style="color: var(--text-primary);">zero use of AI</strong> code generation, AI design tools, or AI assistants of any kind, at any stage of building your project. This includes AI autocomplete/copilot-style tools, AI chatbots for code or design help, and AI website builders. This is strictly enforced, and any confirmed use of AI will result in a <strong style="color: #ff6b6b;">permanent ban from all future Bidaya events</strong>, in addition to disqualification from this one.</p>
-                            </div>
+                            <ul>
+                                <li>You are a high school student or younger.</li>
+                                <li>Create at least three pages that link to each other, including one nested route.</li>
+                                <li>Use at least five React components, including a component that accepts children and another that accepts props.</li>
+                                <li>Include a nested component and a component that fetches and displays API data.</li>
+                                <li>Log at least three hours of build time with Hackatime.</li>
+                            </ul>
 
                             <div class="highlight-info">
-                                <p><span class="icon">⏱</span> <strong>Minimum 3 hours invested</strong></p>
+                                <p><span class="icon">⏱</span> <strong>Minimum 3 hours invested with Hackatime</strong></p>
                                 <p style="margin-top: 0.5rem;">Tracked with <strong style="color: var(--text-primary);">Hackatime</strong>. Hackatime automatically tracks your coding time in the background. It's free and takes a couple of minutes to set up.</p>
                             </div>
                         </div>
@@ -1107,15 +1117,15 @@
                         <div class="hack-card" style="border-color: rgba(255, 138, 0, 0.15);">
                             <h3>Registration and Submission</h3>
                             <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem;">
-                                <a href="https://tally.so/r/xX10z9" target="_blank" class="btn-hackathon" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">
-                                    Register →
+                                <a href="The%20Arctic%20Hackathon.pdf" target="_blank" rel="noopener noreferrer" class="btn-hackathon" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">
+                                    Download the guide →
                                 </a>
-                                <a href="https://tally.so/r/7RzYEP" target="_blank" class="btn-outline" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">
-                                    Submission Form →
+                                <a href="https://discord.gg/VzKjyhTWy4" target="_blank" rel="noopener noreferrer" class="btn-outline" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">
+                                    Join Discord →
                                 </a>
                             </div>
                             <div class="highlight-info" style="margin-top: 1rem;">
-                                <p><span class="icon">📌</span> <strong>Submission deadline:</strong> 26 July 10:00 AM GMT+4 — strict, no extensions.</p>
+                                <p><span class="icon">📌</span> <strong>Submission deadline:</strong> 30 January 11:59 PM IST — strict, no extensions.</p>
                             </div>
                         </div>
                     </div>
@@ -1127,7 +1137,7 @@
                             <ol style="color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem; font-family: 'Inter', sans-serif;">
                                 <li><strong style="color: var(--text-primary);">Deploy your site</strong> — make it live and accessible via a public link (Vercel, Netlify, GitHub Pages, or similar all work great). <em style="color: var(--text-muted);">(Do not expect a localhost project to be judged.)</em></li>
                                 <li><strong style="color: var(--text-primary);">Push your source code</strong> to a public repository.</li>
-                                <li><strong style="color: var(--text-primary);">Fill out the submission form</strong> — <a href="https://tally.so/r/7RzYEP" target="_blank" style="color: var(--orange); text-decoration: none; font-weight: 600;">Click here</a> — before the deadline.</li>
+                                <li><strong style="color: var(--text-primary);">Fill out the submission form</strong> — use the official link shared through <a href="https://bidaya.dev" target="_blank" rel="noopener noreferrer" style="color: var(--orange); text-decoration: none; font-weight: 600;">bidaya.dev</a> — before the deadline.</li>
                                 <li><strong style="color: var(--text-primary);">Answer all questions</strong> on the submission form including a short write-up (3-5 sentences) describing your project and how it fits the topic.</li>
                             </ol>
                             <div class="highlight-danger" style="margin-top: 1rem;">
@@ -1268,7 +1278,7 @@
 <span class="tag">&lt;!DOCTYPE html&gt;</span>
 <span class="tag">&lt;html&gt;</span>
 <span class="tag">&lt;head&gt;</span>
-    <span class="tag">&lt;title&gt;</span>My Ocean Site<span class="tag">&lt;/title&gt;</span>
+    <span class="tag">&lt;title&gt;</span>My Arctic Site<span class="tag">&lt;/title&gt;</span>
     <span class="tag">&lt;link</span> <span class="attr">rel=</span><span class="string">"stylesheet"</span> <span class="attr">href=</span><span class="string">"style.css"</span><span class="tag">&gt;</span>
 <span class="tag">&lt;/head&gt;</span>
 <span class="tag">&lt;body&gt;</span>
@@ -1340,7 +1350,7 @@
                             <span>What's the Topic?</span>
                             <span class="toggle">+</span>
                         </div>
-                        <div class="answer">"Under the Surface: Exploring and comparing the ocean's epipelagic, mesopelagic, and abyssopelagic zones, their unique environments, and the life they support."</div>
+                        <div class="answer">There is no single fixed topic this time. Your project can explore any appropriate subject as long as it connects to the event theme and meets the requirements.</div>
                     </div>
 
                     <div class="faq-item" onclick="toggleFaq(this)">
@@ -1411,9 +1421,6 @@
                         Remember — no losers here, just builders. Questions before the event? Reach out to the organizing team.
                     </p>
                     <div style="margin-top: 1.2rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
-                        <a href="https://underthesurface.vercel.app" target="_blank" class="btn-hackathon" style="padding: 0.8rem 2rem; font-size: 0.95rem;">
-                            Example Site →
-                        </a>
                         <a href="https://discord.gg/VzKjyhTWy4" target="_blank" class="btn-outline">Join Discord</a>
                     </div>
                 </div>
@@ -1444,27 +1451,27 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <div class="logo">
-                    <img src="images/bidaya-english-logo.png" alt="Bidaya Initiative" class="footer-logo" />
+                    <img src="https://bidaya.dev/images/bidaya-english-logo.png" alt="Bidaya Initiative" class="footer-logo" />
                 </div>
                 <p>Empowering young innovators around the globe through collaboration, learning, and real-world impact.</p>
             </div>
             <div class="footer-links">
                 <div class="link-group">
                     <h4>Events</h4>
-                    <a href="hackathon.html">Hackathon</a>
-                    <a href="hackathon.html">Workshops</a>
+                    <a href="https://bidaya.dev/hackathon.html">Hackathon</a>
+                    <a href="https://bidaya.dev/hackathon.html">Workshops</a>
                 </div>
                 <div class="link-group">
                     <h4>Resources</h4>
-                    <a href="documentation.html">Documentation</a>
-                    <a href="hackathon.html">Hackathon</a>
+                    <a href="https://bidaya.dev/documentation.html">Documentation</a>
+                    <a href="https://bidaya.dev/hackathon.html">Hackathon</a>
                     <a href="https://discord.gg/VzKjyhTWy4" target="_blank" rel="noopener noreferrer">Discord</a>
                     <a href="javascript:void(0)" onclick="showJoinDiscordPopup('Mentorship')">Mentorship</a>
                 </div>
                 <div class="link-group">
                     <h4>About</h4>
-                    <a href="index.html#about">Mission</a>
-                    <a href="index.html#contact">Contact</a>
+                    <a href="https://bidaya.dev#about">Mission</a>
+                    <a href="https://bidaya.dev#contact">Contact</a>
                     <a href="https://panel.bidaya.dev" style="color: #667eea; font-weight: 600;" target="_blank">Admin Panel</a>
                 </div>
             </div>
@@ -1475,7 +1482,7 @@
     </div>
 </footer>
 
-    <script src="script.js"></script>
+    <script src="https://bidaya.dev/script.js"></script>
     <script>
         // ===== NOTIFICATION POPUP =====
         function dismissNotification() {
